@@ -74,6 +74,10 @@ public class Planta {
 		}
 	}
 	
+	private Boolean perteneceModelo(Modelo modelo) {
+		return nombreDeLosModelos().contains(modelo.getNombre());
+	}
+	
 	public void quitarEjemplar(Modelo modelo){
 		RegistroDeModelo registro = buscarRegistroDelModelo(modelo);
 		
@@ -100,9 +104,5 @@ public class Planta {
 
 	public void setModelos(List<RegistroDeModelo> modelos) {
 		this.registros = modelos;
-	}
-
-	private Boolean perteneceModelo(Modelo modelo) {
-		return nombreDeLosModelos().contains(modelo.getNombre());
 	}
 }

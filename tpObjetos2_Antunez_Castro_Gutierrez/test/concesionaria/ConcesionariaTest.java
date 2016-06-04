@@ -35,9 +35,10 @@ public class ConcesionariaTest {
 		Planta plantaMock;
 		plantaMock = mock(Planta.class);
 		
-		Float f = concesionariaTest.gastoDeFlete(plantaMock);
+		Float res = concesionariaTest.gastoDeFlete(plantaMock);
+		Float precioXkm = 20.5f;
 		
-		assertEquals(f,f);
+		assertTrue(res>0f && res<=500f*precioXkm);
 	}/*
 
 	@Test
