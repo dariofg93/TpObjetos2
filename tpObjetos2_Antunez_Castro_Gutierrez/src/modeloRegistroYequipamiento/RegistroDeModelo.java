@@ -5,9 +5,9 @@ public class RegistroDeModelo {
 	private Integer cantidad;
 	private Modelo modelo;
 	
-	public RegistroDeModelo(Integer unaCantidad, Modelo unasCaracteristicas){
-		this.setCantidad(unaCantidad);
-		this.setCaracteristicas(modelo);
+	public RegistroDeModelo(Integer unaCantidad, Modelo unModelo){
+		this.cantidad = unaCantidad;
+		this.modelo = unModelo;
 	}
 	
 	// Otros mensajes
@@ -15,26 +15,18 @@ public class RegistroDeModelo {
 	/** Devuelve el nombre.
 	 * Es lo que lo identifica. */
 	public String getNombreDelModelo() {
-		return this.getCaracteristicas().getNombre();		
+		return this.getModelo().getNombre();		
 	}
 	
 	// Getters y Setters
 	
-	public Modelo getCaracteristicas() {
+	public Modelo getModelo() {
 		return modelo;
-	}
-	
-	public void setCaracteristicas(Modelo caracteristicas) {
-		this.modelo = caracteristicas;
 	}
 	
 	/** Devuelve la cantidad del modelo */
 	public Integer getCantidad() {
 		return cantidad;
-	}
-	
-	public void setCantidad(Integer cantidad) {
-		this.cantidad = cantidad;
 	}
 	
 	public Float getPrecioDelModelo() {

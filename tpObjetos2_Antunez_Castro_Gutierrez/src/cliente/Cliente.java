@@ -11,19 +11,19 @@ public class Cliente {
 	
 	private String nombreYApellido;
 	private Integer dni;
-	private String correoElectronico;
-	private Integer direccion;
-	private Date fechaDeNacimiento;
+	private String mail;
+	private String direccion;
+	private Date fechaNac;
 	private Date fechaDeIngreso;
 	private List<Recibo> recibos;
 	
-	public Cliente(Integer unDni, String nyAp, String mail, Integer dir, Date nacimiento, Date ingreso){
+	public Cliente(Integer unDni, String nyAp, String mail, String dir, Date nacimiento, Date ingreso){
 		
 		this.nombreYApellido = nyAp;
 		this.dni = unDni;
-		this.correoElectronico = mail; 
+		this.mail = mail; 
 		this.direccion = dir;
-		this.fechaDeNacimiento = nacimiento;
+		this.fechaNac = nacimiento;
 		this.fechaDeIngreso = ingreso;
 		this.recibos = new ArrayList<Recibo>();
 	}
@@ -43,7 +43,7 @@ public class Cliente {
 	}
 
 	public Date getFecNac() {
-		return this.fechaDeNacimiento;
+		return this.fechaNac;
 	}
 
 	public Date getFechaDeInscripcion() {
