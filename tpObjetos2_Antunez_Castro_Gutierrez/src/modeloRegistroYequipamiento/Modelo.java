@@ -8,7 +8,7 @@ import situacionEconomicoProductiva.Inflacion;
 public class Modelo implements Observer{
 
 	private String nombre;
-	private Integer añoDeLanzamiento;
+	private Integer aÃ±oDeLanzamiento;
 	private Integer cantidadDePuertas;
 	private Equipamiento equipamiento;
 	private Float valorDelModelo;
@@ -18,7 +18,7 @@ public class Modelo implements Observer{
 					Equipamiento equipment, Float value, Inflacion economy){
 		
 		this.setNombre(aName);
-		this.setAñoDeLanzamiento(year);
+		this.setAÃ±oDeLanzamiento(year);
 		this.setCantidadDePuertas(doors);
 		this.setEquipamiento(equipment);
 		this.valorDelModelo = value;
@@ -52,12 +52,12 @@ public class Modelo implements Observer{
 		this.nombre = nombre;
 	}
 
-	public Integer getAñoDeLanzamiento() {
-		return añoDeLanzamiento;
+	public Integer getAÃ±oDeLanzamiento() {
+		return aÃ±oDeLanzamiento;
 	}
 
-	public void setAñoDeLanzamiento(Integer añoDeLanzamiento) {
-		this.añoDeLanzamiento = añoDeLanzamiento;
+	public void setAÃ±oDeLanzamiento(Integer aÃ±oDeLanzamiento) {
+		this.aÃ±oDeLanzamiento = aÃ±oDeLanzamiento;
 	}
 
 	public Integer getCantidadDePuertas() {
