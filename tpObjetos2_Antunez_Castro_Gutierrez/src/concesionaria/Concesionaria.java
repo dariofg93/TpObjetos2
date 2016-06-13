@@ -5,6 +5,7 @@ import java.util.List;
 
 import aseguradora.CompañiaAseguradora;
 import calculadora.CalculadorDeDistancia;
+import cupon.CuponDeAdjudicacion;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Cliente;
@@ -21,6 +22,7 @@ public class Concesionaria {
 	private List<PlanDeAhorro> planes;
 	private Float gananciaAdministrativa;
 	private CompañiaAseguradora compañia;
+	private List<CuponDeAdjudicacion> cupones;
 	
 	public Concesionaria(String lugar, Fabrica unaFabrica, Float ganancia){
 		this.direccion = lugar;
@@ -30,6 +32,7 @@ public class Concesionaria {
 		this.planes = new ArrayList<PlanDeAhorro>();
 		this.gananciaAdministrativa = ganancia;
 		this.compañia = new CompañiaAseguradora();
+		this.cupones = new ArrayList<CuponDeAdjudicacion>();
 	}
 	
 	public void crearPlan(PlanDeAhorro plan){

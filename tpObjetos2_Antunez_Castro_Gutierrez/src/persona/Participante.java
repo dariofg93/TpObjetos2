@@ -7,11 +7,14 @@ import comprobantes.ComprobanteDePago;
 
 public class Participante extends Persona{
 	
-	protected ArrayList<ComprobanteDePago> comprobantes;
+	private ArrayList<ComprobanteDePago> comprobantes;
+	private Boolean disponible;
+	
 	
 	public Participante(Integer unDni, String nyAp, String mail, String dir, Date nacimiento, Date ingreso) {
 		super(unDni, nyAp, mail, dir, nacimiento, ingreso);
 		this.comprobantes = new ArrayList<>();
+		this.disponible = true;
 	}
 
 	public Integer cuotasPagas() {
@@ -23,4 +26,6 @@ public class Participante extends Persona{
 		
 		return (actual.getYear() - fechaNac.getYear());
 	}
+	
+	
 }
