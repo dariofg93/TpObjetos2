@@ -2,16 +2,16 @@ package modoDeAdjudicacion;
 
 import java.util.List;
 
-import cliente.Cliente;
+import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
 public class MayorCobertura extends ModoDeAdjudicacion{
 
 	@Override
-	public Cliente elegirConcursante(PlanDeAhorro plan) {
+	public Participante elegirConcursante(PlanDeAhorro plan) {
 		
-		Cliente retorno;
-		List<Cliente> pagadores = plan.losQueMasPagaron();
+		Participante retorno;
+		List<Participante> pagadores = plan.losQueMasPagaron();
 		
 		if(pagadores.size()==1){
 			retorno = pagadores.get(0);

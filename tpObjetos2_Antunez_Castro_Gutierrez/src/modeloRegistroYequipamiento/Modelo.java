@@ -1,38 +1,25 @@
 package modeloRegistroYequipamiento;
 
-import java.util.Observable;
-import java.util.Observer;
-
-import situacionEconomicoProductiva.Inflacion;
-
-public class Modelo implements Observer{
+public class Modelo {
 
 	private String nombre;
-	private Integer aÃ±oDeLanzamiento;
+	private Integer añoDeLanzamiento;
 	private Integer cantidadDePuertas;
 	private Equipamiento equipamiento;
 	private Float valorDelModelo;
 	private Float valorDeVenta;
 	
 	public Modelo(String aName, Integer year, Integer doors, 
-					Equipamiento equipment, Float value, Inflacion economy){
+					Equipamiento equipment, Float value){
 		
 		this.setNombre(aName);
-		this.setAÃ±oDeLanzamiento(year);
+		this.setAñoDeLanzamiento(year);
 		this.setCantidadDePuertas(doors);
 		this.setEquipamiento(equipment);
 		this.valorDelModelo = value;
-		
-		economy.addObserver(this);
-		this.valorDeVenta = value * economy.getPorcentaje();
 	}
 
 	// Otros mensajes
-	
-	@Override
-	public void update(Observable o, Object arg) {
-		setNuevoValor(valorDelModelo * (Integer) arg);
-	}
 
 	// Getters y Setters
 	
@@ -52,12 +39,12 @@ public class Modelo implements Observer{
 		this.nombre = nombre;
 	}
 
-	public Integer getAÃ±oDeLanzamiento() {
-		return aÃ±oDeLanzamiento;
+	public Integer getAñoDeLanzamiento() {
+		return añoDeLanzamiento;
 	}
 
-	public void setAÃ±oDeLanzamiento(Integer aÃ±oDeLanzamiento) {
-		this.aÃ±oDeLanzamiento = aÃ±oDeLanzamiento;
+	public void setAñoDeLanzamiento(Integer añoDeLanzamiento) {
+		this.añoDeLanzamiento = añoDeLanzamiento;
 	}
 
 	public Integer getCantidadDePuertas() {
@@ -74,5 +61,9 @@ public class Modelo implements Observer{
 
 	public void setEquipamiento(Equipamiento equipamiento) {
 		this.equipamiento = equipamiento;
+	}
+
+	public Float porcentajeDelModelo(Integer porcent) {
+		return (valorDelModelo * porcent) / 100;
 	}
 }

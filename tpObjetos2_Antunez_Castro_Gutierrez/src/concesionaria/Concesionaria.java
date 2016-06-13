@@ -3,10 +3,12 @@ package concesionaria;
 import java.util.ArrayList;
 import java.util.List;
 
+import aseguradora.CompañiaAseguradora;
 import calculadora.CalculadorDeDistancia;
-import cliente.Cliente;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
+import persona.Cliente;
+import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 import planta.Planta;
 
@@ -17,13 +19,17 @@ public class Concesionaria {
 	private Fabrica miFabrica;
 	private List<Cliente> clientes;
 	private List<PlanDeAhorro> planes;
+	private Float gananciaAdministrativa;
+	private CompañiaAseguradora compañia;
 	
-	public Concesionaria(String lugar, Fabrica unaFabrica){
+	public Concesionaria(String lugar, Fabrica unaFabrica, Float ganancia){
 		this.direccion = lugar;
 		this.calculadora = new CalculadorDeDistancia();
 		this.miFabrica = unaFabrica;
 		this.clientes = new ArrayList<Cliente>();
 		this.planes = new ArrayList<PlanDeAhorro>();
+		this.gananciaAdministrativa = ganancia;
+		this.compañia = new CompañiaAseguradora();
 	}
 	
 	public void crearPlan(PlanDeAhorro plan){
@@ -68,11 +74,35 @@ public class Concesionaria {
 	
 	///REACEEEEEEEEER
 	public void adjudicarMovil(PlanDeAhorro plan){
-		miFabrica.quitarEjemplar(plan.getModelo());
+		//miFabrica.quitarEjemplar(plan.getModelo());
 		//..la implementacion sigue, depende del comportamiento de las otras clases...
 	}
 	
 	public CalculadorDeDistancia getCalculadora(){
 		return this.calculadora;
+	}
+	
+	//El modelo se encuentra en el stock de la concesionaria
+	public Planta plantaMasCercanaConModelo(Modelo model){
+		Planta retorno = miFabrica.getPlantas().get(0);
+		
+		for(Planta unaPlanta: miFabrica.buscarPlantasConModelo(model)){
+			if(calculadora.calcularDistancia(unaPlanta)     <
+					calculadora.calcularDistancia(retorno))
+				retorno = unaPlanta;
+		}
+		return retorno;
+	}
+	
+	public void quitarEjemplar(Modelo model){
+		plantaMasCercanaConModelo(model).quitarEjemplar(model);
+	}
+
+	public Float gastoAdministrativos() {
+		return gananciaAdministrativa;
+	}
+
+	public Float montoDelSeguro(Participante p, Modelo modelo) {
+		return compañia.montoDelSeguro(p,modelo);
 	}
 }

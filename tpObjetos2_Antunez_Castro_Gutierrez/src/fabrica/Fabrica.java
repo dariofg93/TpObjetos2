@@ -17,7 +17,11 @@ public class Fabrica {
 	// Otros mensajes
 	
 	public Integer stock(Modelo modelo) {
-		return this.buscarPlantaConModelo(modelo).stock(modelo);
+		Integer total = 0;
+		
+		for(Planta unaPlanta : buscarPlantasConModelo(modelo))
+			total += unaPlanta.stock(modelo);
+		return total;
 	}
 	
 	/** Dado un modelo, en el que solo nos interesa su nombre,
@@ -27,26 +31,14 @@ public class Fabrica {
 	 *  
 	 *  Parcial, en caso de que el modelo no se encuentre.
 	 */
-	public Planta buscarPlantaConModelo(Modelo modelo){
-		Planta plantaEncontrada = null;
+	public ArrayList<Planta> buscarPlantasConModelo(Modelo modelo){
+		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
 		
 		for(Planta unaPlanta: this.getPlantas()){
-			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre())){
-				plantaEncontrada = unaPlanta;
-				break;
-			}
+			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
+				plantasEncontradas.add(unaPlanta);
 		}
-		return plantaEncontrada;
-	}
-	
-	/** Busca el modelo(Osea el String dado por parametro,
-	 *  que es el nombre del modelo) en su lista de plantas,
-	 *  de ese modelo se fija la cantidad que tiene.. 
-	 *  si tiene mas de 2 quita una repeticion,
-	 *  si es solo uno quita el modelo directamente..
-	 */
-	public void quitarEjemplar(Modelo modelo){
-		buscarPlantaConModelo(modelo).quitarEjemplar(modelo);
+		return plantasEncontradas;
 	}
 	
 	// Getters y Setters

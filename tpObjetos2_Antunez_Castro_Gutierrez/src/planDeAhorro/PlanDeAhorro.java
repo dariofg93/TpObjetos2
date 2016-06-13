@@ -3,28 +3,31 @@ package planDeAhorro;
 import java.util.ArrayList;
 import java.util.List;
 
-import cliente.Cliente;
+import concesionaria.Concesionaria;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
+import persona.Participante;
 
 public class PlanDeAhorro {
 	
 	private Integer numeroDeGrupo;
 	private Modelo modeloSuscripto;
-	private List<Cliente> suscriptos;
+	private List<Participante> suscriptos;
 	private Financiamiento financiamiento;
 	private Integer cantidadDeCuotas;
 	private ModoDeAdjudicacion modoDeAdjudicacion;
+	private Concesionaria concesionaria;
 	
 	public PlanDeAhorro(Integer n, Modelo unModelo, Financiamiento unFinanciamiento,
-						Integer cantCuotas, ModoDeAdjudicacion unModo){
+						Integer cantCuotas, ModoDeAdjudicacion unModo, Concesionaria unaConcesionaria){
 		this.numeroDeGrupo = n;
 		this.modeloSuscripto = unModelo;
-		this.suscriptos = new ArrayList<Cliente>();
+		this.suscriptos = new ArrayList<Participante>();
 		this.financiamiento = unFinanciamiento;
 		this.cantidadDeCuotas = cantCuotas;
 		this.modoDeAdjudicacion = unModo;
+		this.concesionaria = unaConcesionaria;
 	}
 
 	public int cantidadDeParticipantes() {
@@ -35,16 +38,16 @@ public class PlanDeAhorro {
 		return this.modeloSuscripto;
 	}
 
-	public List<Cliente> getParticipantes() {
+	public List<Participante> getParticipantes() {
 		return this.suscriptos;
 	}
 	
-	public List<Cliente> losQueMasPagaron(){
-		List<Cliente>  ganadores = new ArrayList<Cliente>();
+	public List<Participante> losQueMasPagaron(){
+		List<Participante>  ganadores = new ArrayList<Participante>();
 		
-		for(Cliente cliente:  this.suscriptos){
-			if(cliente.cuotasPagas(this)==mayorCantidadCuotasPagas())
-				ganadores.add(cliente);
+		for(Participante participantes:  this.suscriptos){
+			if(participantes.cuotasPagas()==mayorCantidadCuotasPagas())
+				ganadores.add(participantes);
 		}
 		return ganadores;		
 	}
@@ -52,27 +55,27 @@ public class PlanDeAhorro {
 	private Integer mayorCantidadCuotasPagas() {
 		Integer mayorPagas = 0;
 		
-		for(Cliente current : suscriptos) {
-			if(current.cuotasPagas(this)>mayorPagas)
-				mayorPagas = current.cuotasPagas(this);
+		for(Participante current : suscriptos) {
+			if(current.cuotasPagas()>mayorPagas)
+				mayorPagas = current.cuotasPagas();
 		}
 		return mayorPagas;
 	}
 	
-	public List<Cliente> losMasViejos(List<Cliente> ganadores){
-		List<Cliente> mayores = new ArrayList<Cliente>();
+	public List<Participante> losMasViejos(List<Participante> ganadores){
+		List<Participante> mayores = new ArrayList<Participante>();
 		
-		for(Cliente current : ganadores){
+		for(Participante current : ganadores){
 			if(current.getFecNac().equals(elmasViejo(ganadores)))
 				mayores.add(current);
 		}
 		return mayores;
 	}
 
-	private Cliente elmasViejo(List<Cliente> ganadores) {
-		Cliente mayor = ganadores.get(0);
+	private Participante elmasViejo(List<Participante> ganadores) {
+		Participante mayor = ganadores.get(0);
 		
-		for(Cliente current : ganadores) {
+		for(Participante current : ganadores) {
 			if(current.getFecNac().before(mayor.getFecNac()))
 				mayor = current;
 		}
@@ -83,13 +86,21 @@ public class PlanDeAhorro {
 		return numeroDeGrupo;
 	}
 	
-	public Cliente elPrimerSuscriptor(List<Cliente> ganadores){
-		Cliente elGanador = ganadores.get(0);
+	public Participante elPrimerSuscriptor(List<Participante> ganadores){
+		Participante elGanador = ganadores.get(0);
 		
-		for(Cliente current : ganadores) {
+		for(Participante current : ganadores) {
 			if(current.getFechaDeInscripcion().before(elGanador.getFecNac()))
 				elGanador = current;
 		}
 		return elGanador;
+	}
+
+	public Concesionaria getConcesionaria() {
+		return concesionaria;
+	}
+
+	public Float calcularAlicuota() {
+		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 }

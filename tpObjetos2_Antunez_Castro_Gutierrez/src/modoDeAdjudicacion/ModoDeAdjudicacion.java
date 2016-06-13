@@ -1,9 +1,9 @@
 package modoDeAdjudicacion;
 
-import cliente.Cliente;
+import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
 public abstract class ModoDeAdjudicacion {
 	
-	public abstract Cliente elegirConcursante(PlanDeAhorro plan);
+	public abstract Participante elegirConcursante(PlanDeAhorro plan);
 }

@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import calculadora.CalculadorDeDistancia;
-import cliente.Cliente;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.RegistroDeModelo;
+import persona.Cliente;
 import planDeAhorro.PlanDeAhorro;
 import planta.Planta;
 
