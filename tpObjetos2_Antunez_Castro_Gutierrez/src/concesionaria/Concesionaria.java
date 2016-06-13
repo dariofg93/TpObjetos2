@@ -84,10 +84,16 @@ public class Concesionaria {
 	}
 	
 	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
-		plan.elegirGanador();
-		adjudicarMovil(plan,cupon);
+		if(hayStock(plan.getModelo())){
+			plan.elegirGanador();
+			adjudicarMovil(plan,cupon);
+		}
 	}
 	
+	public Boolean hayStock(Modelo modelo) {
+		return stock(modelo)>=1;
+	}
+
 	public CalculadorDeDistancia getCalculadora(){
 		return this.calculadora;
 	}
