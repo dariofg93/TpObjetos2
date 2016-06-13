@@ -26,6 +26,14 @@ public class Participante extends Persona{
 		
 		return (actual.getYear() - fechaNac.getYear());
 	}
+
+	public Boolean estaDisponible() {
+		return disponible;
+	}
+
+	public void fuiAdjudicado() {
+		disponible = false;
+	}
 	
 	
 }

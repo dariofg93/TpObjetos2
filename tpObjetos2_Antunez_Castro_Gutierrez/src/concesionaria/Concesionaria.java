@@ -75,10 +75,17 @@ public class Concesionaria {
 		return winner;
 	}
 	
-	///REACEEEEEEEEER
-	public void adjudicarMovil(PlanDeAhorro plan){
-		//miFabrica.quitarEjemplar(plan.getModelo());
-		//..la implementacion sigue, depende del comportamiento de las otras clases...
+	///Obs: Se le agrega un cupon como parametro en vez de un plan de ahorro para generar un cupon porque
+	// si es necesario agregarle mas objetos para generar un nuevo cupon hay que modificar el codigo
+	// es abierto a extencion pero no cerrado a modificacion.. principio SOLID
+	public void adjudicarMovil(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
+		quitarEjemplar(plan.getModelo());
+		cupones.add(cupon);
+	}
+	
+	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
+		plan.elegirGanador();
+		adjudicarMovil(plan,cupon);
 	}
 	
 	public CalculadorDeDistancia getCalculadora(){

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import concesionaria.Concesionaria;
+import cupon.CuponDeAdjudicacion;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
@@ -45,7 +46,7 @@ public class PlanDeAhorro {
 	public List<Participante> losQueMasPagaron(){
 		List<Participante>  ganadores = new ArrayList<Participante>();
 		
-		for(Participante participantes:  this.suscriptos){
+		for(Participante participantes: participantesDisponibles()){
 			if(participantes.cuotasPagas()==mayorCantidadCuotasPagas())
 				ganadores.add(participantes);
 		}
@@ -55,13 +56,23 @@ public class PlanDeAhorro {
 	private Integer mayorCantidadCuotasPagas() {
 		Integer mayorPagas = 0;
 		
-		for(Participante current : suscriptos) {
+		for(Participante current : participantesDisponibles()) {
 			if(current.cuotasPagas()>mayorPagas)
 				mayorPagas = current.cuotasPagas();
 		}
 		return mayorPagas;
 	}
 	
+	private ArrayList<Participante> participantesDisponibles() {
+		ArrayList<Participante> disponibles = new ArrayList<>();
+		
+		for(Participante p: suscriptos){
+			if(p.estaDisponible())
+				disponibles.add(p);
+		}
+		return disponibles;
+	}
+
 	public List<Participante> losMasViejos(List<Participante> ganadores){
 		List<Participante> mayores = new ArrayList<Participante>();
 		
@@ -102,5 +113,11 @@ public class PlanDeAhorro {
 
 	public Float calcularAlicuota() {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
+	}
+	
+	public void elegirGanador(){
+		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
+		elGanador.fuiAdjudicado();
+		
 	}
 }
