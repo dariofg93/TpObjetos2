@@ -5,7 +5,9 @@ import planDeAhorro.PlanDeAhorro;
 
 public class CuponDeAdjudicacion {
 
+	@SuppressWarnings("unused")
 	private Float montoTotal;
+	@SuppressWarnings("unused")
 	private Modelo modelo;
 	
 	public CuponDeAdjudicacion(PlanDeAhorro plan){

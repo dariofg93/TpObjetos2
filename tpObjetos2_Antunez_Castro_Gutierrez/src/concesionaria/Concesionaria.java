@@ -8,6 +8,7 @@ import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
+import modoDeAdjudicacion.SinParticipantesException;
 import persona.Cliente;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
@@ -15,9 +16,11 @@ import planta.Planta;
 
 public class Concesionaria {
 
+	@SuppressWarnings("unused")
 	private String direccion;
 	private CalculadorDeDistancia calculadora;
 	private Fabrica miFabrica;
+	@SuppressWarnings("unused")
 	private List<Cliente> clientes;
 	private List<PlanDeAhorro> planes;
 	private Float gananciaAdministrativa;
@@ -83,7 +86,7 @@ public class Concesionaria {
 		cupones.add(cupon);
 	}
 	
-	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
+	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon) throws SinParticipantesException{
 		if(hayStock(plan.getModelo())){
 			plan.elegirGanador();
 			adjudicarMovil(plan,cupon);

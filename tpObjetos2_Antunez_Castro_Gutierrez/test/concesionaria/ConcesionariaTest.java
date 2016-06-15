@@ -11,6 +11,7 @@ import org.junit.Test;
 
 import calculadora.CalculadorDeDistancia;
 import fabrica.Fabrica;
+import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
 import persona.Cliente;
 import planDeAhorro.PlanDeAhorro;
@@ -27,7 +28,7 @@ public class ConcesionariaTest {
 		
 		fabricaMock = mock(Fabrica.class);
 
-		concesionariaTest = new Concesionaria("Roque Saenz PeÃ±a 352", fabricaMock);
+		concesionariaTest = new Concesionaria("Roque Saenz Peña 352", fabricaMock, 150.0f);
 	}
 	
 	@Test
@@ -39,8 +40,8 @@ public class ConcesionariaTest {
 		Float precioXkm = 20.5f;
 		
 		assertTrue(res>0f && res<=500f*precioXkm);
-	}/*
-
+	}
+	/*
 	@Test
 	public void testStock() {
 		Modelo modeloMock = mock(Modelo.class);

@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import concesionaria.Concesionaria;
-import cupon.CuponDeAdjudicacion;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
+import modoDeAdjudicacion.SinParticipantesException;
 import persona.Participante;
 
 public class PlanDeAhorro {
@@ -63,7 +63,7 @@ public class PlanDeAhorro {
 		return mayorPagas;
 	}
 	
-	private ArrayList<Participante> participantesDisponibles() {
+	public ArrayList<Participante> participantesDisponibles() {
 		ArrayList<Participante> disponibles = new ArrayList<>();
 		
 		for(Participante p: suscriptos){
@@ -71,6 +71,10 @@ public class PlanDeAhorro {
 				disponibles.add(p);
 		}
 		return disponibles;
+	}
+	
+	public Integer cantidadDeParticipantesDisponibles() {
+		return participantesDisponibles().size();
 	}
 
 	public List<Participante> losMasViejos(List<Participante> ganadores){
@@ -115,7 +119,8 @@ public class PlanDeAhorro {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 	
-	public void elegirGanador(){
+	public void elegirGanador() throws SinParticipantesException{
+		
 		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
 		elGanador.fuiAdjudicado();
 		

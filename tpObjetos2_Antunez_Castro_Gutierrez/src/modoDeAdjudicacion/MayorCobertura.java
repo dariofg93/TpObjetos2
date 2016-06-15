@@ -5,7 +5,7 @@ import java.util.List;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
-public class MayorCobertura extends ModoDeAdjudicacion{
+public class MayorCobertura implements ModoDeAdjudicacion{
 
 	@Override
 	public Participante elegirConcursante(PlanDeAhorro plan) {
