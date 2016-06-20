@@ -124,6 +124,6 @@ public class PlanDeAhorro {
 		
 		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
 		elGanador.fuiAdjudicado();
-		
+		//Genererar cupon y devolverlo, return...
 	}
 }

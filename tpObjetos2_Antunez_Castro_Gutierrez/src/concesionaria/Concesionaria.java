@@ -92,12 +92,11 @@ public class Concesionaria {
 	
 	public void sortearMovil(PlanDeAhorro plan)/*throws SinParticipantesException*/{
 			CuponDeAdjudicacion cupon = plan.elegirGanador(); 
-			adjudicarMovil(cupon);
+			emitirCupon(cupon);
 	}
 	
-	//Reveer
-	public void adjudicarMovil(CuponDeAdjudicacion cupon){
-		quitarEjemplar(cupon.getModelo());
+	public void emitirCupon(CuponDeAdjudicacion cupon){
+		miFabrica.quitarEjemplar(cupon.getModelo());
 		cupones.add(cupon);
 	}
 	
@@ -106,6 +105,11 @@ public class Concesionaria {
 	 */
 	public Float gastoDeFlete(Planta unaPlanta){
 		return calculadora.calcularDistancia(unaPlanta) * 20.5f;
+	}
+	
+	//Prec.: El cupon existe en la lista de cupones de adjudicacion
+	public void registrarPagoDelCupon(CuponDeAdjudicacion cupon){
+		cupones.remove(cupon);
 	}
 	
 	public Integer stock(Modelo modelo){
