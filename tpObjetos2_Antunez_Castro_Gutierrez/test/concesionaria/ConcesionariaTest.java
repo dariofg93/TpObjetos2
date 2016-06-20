@@ -3,18 +3,11 @@ package concesionaria;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import calculadora.CalculadorDeDistancia;
 import fabrica.Fabrica;
-import modeloRegistroYequipamiento.Modelo;
-import modeloRegistroYequipamiento.RegistroDeModelo;
-import persona.Cliente;
-import planDeAhorro.PlanDeAhorro;
 import planta.Planta;
 
 public class ConcesionariaTest {
@@ -32,7 +25,7 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testGastoDeFlete() {
+	public void testGastoDeFlete() {		//Modificar
 		Planta plantaMock;
 		plantaMock = mock(Planta.class);
 		

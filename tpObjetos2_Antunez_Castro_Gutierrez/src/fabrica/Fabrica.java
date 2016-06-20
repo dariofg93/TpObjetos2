@@ -3,6 +3,7 @@ package fabrica;
 import java.util.ArrayList;
 import java.util.List;
 
+import concesionaria.Concesionaria;
 import excepciones.ExceptionStock;
 import modeloRegistroYequipamiento.Modelo;
 import planta.Planta;
@@ -10,9 +11,11 @@ import planta.Planta;
 public class Fabrica {
 
 	private List<Planta> plantas;
+	private Concesionaria miConcesionaria;
 
-	public Fabrica(){
-		this.setPlantas(new ArrayList<Planta>());
+	public Fabrica(Concesionaria unaConcesionaria){
+		this.plantas = new ArrayList<Planta>();
+		this.miConcesionaria = unaConcesionaria;
 	}
 	
 	// Otros mensajes
@@ -27,30 +30,30 @@ public class Fabrica {
 		return total;
 	}
 	
-	/** Dado un modelo, en el que solo nos interesa su nombre,
-	 *  busca entre sus plantas el modelo y lo devuelve,
-	 *  lo encuentra por el nombre comparando los nombres.
-	 *  
-	 *  
-	 *  Parcial, en caso de que el modelo no se encuentre.
-	 */
 	public ArrayList<Planta> buscarPlantasConModelo(Modelo modelo){
 		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
 		
-		for(Planta unaPlanta: this.getPlantas()){
+		for(Planta unaPlanta: plantas){
 			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
 				plantasEncontradas.add(unaPlanta);
 		}
 		return plantasEncontradas;
 	}
 	
-	// Getters y Setters
-	
-	public List<Planta> getPlantas() {
-		return plantas;
+	//El modelo se encuentra en el stock de la concesionaria
+	public Planta plantaMasCercanaAConcesionaria(Modelo model){
+		Planta retorno = buscarPlantasConModelo(model).get(0);
+			
+		for(Planta unaPlanta: buscarPlantasConModelo(model)){
+			if(miConcesionaria.getCalculadora().calcularDistancia(unaPlanta)    
+										<
+				miConcesionaria.getCalculadora().calcularDistancia(retorno))
+					retorno = unaPlanta;
+		}
+		return retorno;
 	}
-
-	public void setPlantas(List<Planta> plantas) {
-		this.plantas = plantas;
+	
+	public void quitarEjemplar(Modelo model) {
+		plantaMasCercanaAConcesionaria(model).quitarEjemplar(model);
 	}
 }

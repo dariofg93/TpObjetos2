@@ -43,27 +43,25 @@ public class Concesionaria {
 	public void setCompañia(CompañiaAseguradora comp){
 		this.compañia = comp;
 	}
+
+	public CalculadorDeDistancia getCalculadora(){
+		return this.calculadora;
+	}
+	
+	public Float gastoAdministrativos() {
+		return gananciaAdministrativa;
+	}
+	
+	public Fabrica getFabrica() {
+		return miFabrica;
+	}
 	
 	public void crearPlan(PlanDeAhorro plan){
 		planes.add(plan);
 	}
 	
-	/**
-	 * Obs: El flete es igual a $20,50 por Kilometro.
-	 */
-	public Float gastoDeFlete(Planta unaPlanta){
-		return calculadora.calcularDistancia(unaPlanta) * 20.5f;
-	}
-	
-	public Integer stock(Modelo modelo){
-		Integer total = 0;
-		try{
-			total = miFabrica.stock(modelo);
-		}
-		catch(ExceptionStock arg){
-			System.out.println(arg);
-		}
-		return total;
+	public void registrarCliente(Cliente unCliente){
+		clientes.add(unCliente);
 	}
 	
 	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos(){
@@ -92,45 +90,33 @@ public class Concesionaria {
 		return winner;
 	}
 	
+	public void sortearMovil(PlanDeAhorro plan)/*throws SinParticipantesException*/{
+			CuponDeAdjudicacion cupon = plan.elegirGanador(); 
+			adjudicarMovil(cupon);
+	}
+	
 	//Reveer
-	public void adjudicarMovil(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
-		quitarEjemplar(plan.getModelo());
+	public void adjudicarMovil(CuponDeAdjudicacion cupon){
+		quitarEjemplar(cupon.getModelo());
 		cupones.add(cupon);
 	}
 	
-	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon) throws SinParticipantesException{
-		if(hayStock(plan.getModelo())){
-			plan.elegirGanador(); 
-			adjudicarMovil(plan,cupon);
+	/**
+	 * Obs: El flete es igual a $20,50 por Kilometro.
+	 */
+	public Float gastoDeFlete(Planta unaPlanta){
+		return calculadora.calcularDistancia(unaPlanta) * 20.5f;
+	}
+	
+	public Integer stock(Modelo modelo){
+		Integer total = 0;
+		try{
+			total = miFabrica.stock(modelo);
 		}
-	}
-	
-	public Boolean hayStock(Modelo modelo) {
-		return stock(modelo)>=1;
-	}
-
-	public CalculadorDeDistancia getCalculadora(){
-		return this.calculadora;
-	}
-	
-	//El modelo se encuentra en el stock de la concesionaria
-	public Planta plantaMasCercanaConModelo(Modelo model){
-		Planta retorno = miFabrica.getPlantas().get(0);
-		
-		for(Planta unaPlanta: miFabrica.buscarPlantasConModelo(model)){
-			if(calculadora.calcularDistancia(unaPlanta)     <
-					calculadora.calcularDistancia(retorno))
-				retorno = unaPlanta;
+		catch(ExceptionStock arg){
+			System.out.println(arg);
 		}
-		return retorno;
-	}
-	
-	public void quitarEjemplar(Modelo model){
-		plantaMasCercanaConModelo(model).quitarEjemplar(model);
-	}
-
-	public Float gastoAdministrativos() {
-		return gananciaAdministrativa;
+		return total;
 	}
 
 	public Float montoDelSeguro(Participante p, Modelo modelo) {

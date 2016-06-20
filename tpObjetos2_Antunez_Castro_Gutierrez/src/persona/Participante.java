@@ -5,16 +5,18 @@ import java.util.Date;
 
 import comprobantes.ComprobanteDePago;
 
-public class Participante extends Persona{
+public class Participante{
 	
 	private ArrayList<ComprobanteDePago> comprobantes;
 	private Boolean disponible;
+	private Date fechaInscripcion;
+	private Cliente cliente;
 	
-	
-	public Participante(Integer unDni, String nyAp, String mail, String dir, Date nacimiento, Date ingreso) {
-		super(unDni, nyAp, mail, dir, nacimiento, ingreso);
+	public Participante(Cliente unCliente) {
 		this.comprobantes = new ArrayList<>();
 		this.disponible = true;
+		this.cliente = unCliente;
+		this.fechaInscripcion = new Date();
 	}
 
 	public Integer cuotasPagas() {
@@ -24,7 +26,7 @@ public class Participante extends Persona{
 	public Integer edad() {
 		Date actual = new Date();
 		
-		return (actual.getYear() - fechaNac.getYear());
+		return (actual.getYear() - cliente.getFecNac().getYear());
 	}
 
 	public Boolean estaDisponible() {
@@ -34,6 +36,8 @@ public class Participante extends Persona{
 	public void fuiAdjudicado() {
 		disponible = false;
 	}
-	
-	
+
+	public Cliente getCliente() {
+		return cliente;
+	}
 }
