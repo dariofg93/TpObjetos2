@@ -3,6 +3,7 @@ package fabrica;
 import java.util.ArrayList;
 import java.util.List;
 
+import excepciones.ExceptionStock;
 import modeloRegistroYequipamiento.Modelo;
 import planta.Planta;
 
@@ -16,11 +17,13 @@ public class Fabrica {
 	
 	// Otros mensajes
 	
-	public Integer stock(Modelo modelo) {
+	public Integer stock(Modelo modelo) throws ExceptionStock{
 		Integer total = 0;
-		
 		for(Planta unaPlanta : buscarPlantasConModelo(modelo))
 			total += unaPlanta.stock(modelo);
+		
+		if(total == 0)
+			throw new ExceptionStock();
 		return total;
 	}
 	

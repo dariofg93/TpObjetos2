@@ -6,9 +6,9 @@ import java.util.List;
 import aseguradora.CompañiaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
+import excepciones.ExceptionStock;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
-import modoDeAdjudicacion.SinParticipantesException;
 import persona.Cliente;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
@@ -16,11 +16,9 @@ import planta.Planta;
 
 public class Concesionaria {
 
-	@SuppressWarnings("unused")
 	private String direccion;
 	private CalculadorDeDistancia calculadora;
 	private Fabrica miFabrica;
-	@SuppressWarnings("unused")
 	private List<Cliente> clientes;
 	private List<PlanDeAhorro> planes;
 	private Float gananciaAdministrativa;
@@ -38,6 +36,14 @@ public class Concesionaria {
 		this.cupones = new ArrayList<CuponDeAdjudicacion>();
 	}
 	
+	public void setCalculadora(CalculadorDeDistancia calc){
+		this.calculadora = calc;
+	}
+	
+	public void setCompañia(CompañiaAseguradora comp){
+		this.compañia = comp;
+	}
+	
 	public void crearPlan(PlanDeAhorro plan){
 		planes.add(plan);
 	}
@@ -50,7 +56,14 @@ public class Concesionaria {
 	}
 	
 	public Integer stock(Modelo modelo){
-		return miFabrica.stock(modelo);
+		Integer total = 0;
+		try{
+			total = miFabrica.stock(modelo);
+		}
+		catch(ExceptionStock arg){
+			System.out.println(arg);
+		}
+		return total;
 	}
 	
 	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos(){
@@ -59,28 +72,27 @@ public class Concesionaria {
 		Integer repetitions = 0;
 		
 		while(repetitions<10 && !(allPlans.isEmpty())){
-			orderedPlans.add(planConMasSubscriptos());
+			PlanDeAhorro nextPlan = planConMasSubscriptos(allPlans);
+			orderedPlans.add(nextPlan);
 			
-			allPlans.remove(planConMasSubscriptos());
+			allPlans.remove(nextPlan);
 			repetitions++;
 		}
 		return orderedPlans;
 	}
 	
 	//Precondicion: hay por lo menos un plan en la concesionaria.
-	private PlanDeAhorro planConMasSubscriptos(){
+	private PlanDeAhorro planConMasSubscriptos(List<PlanDeAhorro> plans){
 		PlanDeAhorro winner = planes.get(0);
 		
-		for(PlanDeAhorro current: planes){
+		for(PlanDeAhorro current: plans){
 			if(current.cantidadDeParticipantes() > winner.cantidadDeParticipantes())
 				winner = current;
 		}
 		return winner;
 	}
 	
-	///Obs: Se le agrega un cupon como parametro en vez de un plan de ahorro para generar un cupon porque
-	// si es necesario agregarle mas objetos para generar un nuevo cupon hay que modificar el codigo
-	// es abierto a extencion pero no cerrado a modificacion.. principio SOLID
+	//Reveer
 	public void adjudicarMovil(PlanDeAhorro plan,CuponDeAdjudicacion cupon){
 		quitarEjemplar(plan.getModelo());
 		cupones.add(cupon);
@@ -88,7 +100,7 @@ public class Concesionaria {
 	
 	public void elegirGanador(PlanDeAhorro plan,CuponDeAdjudicacion cupon) throws SinParticipantesException{
 		if(hayStock(plan.getModelo())){
-			plan.elegirGanador();
+			plan.elegirGanador(); 
 			adjudicarMovil(plan,cupon);
 		}
 	}
