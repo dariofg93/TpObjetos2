@@ -8,7 +8,6 @@ import cupon.CuponDeAdjudicacion;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
-import modoDeAdjudicacion.SinParticipantesException;
 import persona.Participante;
 
 public class PlanDeAhorro {
@@ -120,7 +119,7 @@ public class PlanDeAhorro {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 	
-	public CuponDeAdjudicacion elegirGanador() throws SinParticipantesException{
+	public CuponDeAdjudicacion elegirGanador()/* throws SinParticipantesException*/{
 		
 		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
 		elGanador.fuiAdjudicado();

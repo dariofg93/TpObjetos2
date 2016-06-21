@@ -6,33 +6,26 @@ import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
-import planta.Planta;
+import planDeAhorro.PlanDeAhorro;
 
 public class ConcesionariaTest {
 
 	Concesionaria concesionariaTest;
-	Fabrica fabricaMock;
-	
 	
 	@Before
 	public void setUp(){
-		
-		fabricaMock = mock(Fabrica.class);
-
-		concesionariaTest = new Concesionaria("Roque Saenz Peña 352", fabricaMock, 150.0f);
+		concesionariaTest = new Concesionaria("Roque Saenz Peña 352", 150.0f);
 	}
 	
 	@Test
-	public void testGastoDeFlete() {		//Modificar
-		Planta plantaMock;
-		plantaMock = mock(Planta.class);
+	public void testCrearPlan() {
+		PlanDeAhorro planMock;
+		planMock = mock(PlanDeAhorro.class);
 		
-		Float res = concesionariaTest.gastoDeFlete(plantaMock);
-		Float precioXkm = 20.5f;
+		concesionariaTest.crearPlan(planMock);
 		
-		assertTrue(res>0f && res<=500f*precioXkm);
+		assertTrue(concesionariaTest.getPlanes().contains(planMock));
 	}
 	
 	@Test

@@ -3,6 +3,8 @@ package concesionaria;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mockito.Matchers;
+
 import aseguradora.CompañiaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
@@ -25,10 +27,10 @@ public class Concesionaria {
 	private CompañiaAseguradora compañia;
 	private List<CuponDeAdjudicacion> cupones;
 	
-	public Concesionaria(String lugar, Fabrica unaFabrica, Float ganancia){
+	public Concesionaria(String lugar, Float ganancia){
 		this.direccion = lugar;
 		this.calculadora = new CalculadorDeDistancia();
-		this.miFabrica = unaFabrica;
+		this.miFabrica = new Fabrica(this);
 		this.clientes = new ArrayList<Cliente>();
 		this.planes = new ArrayList<PlanDeAhorro>();
 		this.gananciaAdministrativa = ganancia;
@@ -43,17 +45,21 @@ public class Concesionaria {
 	public void setCompañia(CompañiaAseguradora comp){
 		this.compañia = comp;
 	}
-
-	public CalculadorDeDistancia getCalculadora(){
-		return this.calculadora;
-	}
 	
+	public void setFabrica(Fabrica f){
+		this.miFabrica = f;
+	}
+
 	public Float gastoAdministrativos() {
 		return gananciaAdministrativa;
 	}
 	
 	public Fabrica getFabrica() {
 		return miFabrica;
+	}
+	
+	public List<PlanDeAhorro> getPlanes() {
+		return planes;
 	}
 	
 	public void crearPlan(PlanDeAhorro plan){
@@ -91,7 +97,7 @@ public class Concesionaria {
 	}
 	
 	public void sortearMovil(PlanDeAhorro plan)/*throws SinParticipantesException*/{
-			CuponDeAdjudicacion cupon = plan.elegirGanador(); 
+			CuponDeAdjudicacion cupon = plan.elegirGanador(); //Mejor que devuelva un participante
 			emitirCupon(cupon);
 	}
 	

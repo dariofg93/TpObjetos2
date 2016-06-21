@@ -48,9 +48,9 @@ public class Fabrica {
 		Planta retorno = plantasConModelo(model).get(0);
 			
 		for(Planta unaPlanta: plantasConModelo(model)){
-			if(miConcesionaria.getCalculadora().calcularDistancia(unaPlanta)    
-										<
-				miConcesionaria.getCalculadora().calcularDistancia(retorno))
+			if(miConcesionaria.gastoDeFlete(unaPlanta)    
+								<
+				miConcesionaria.gastoDeFlete(retorno))
 					retorno = unaPlanta;
 		}
 		return retorno;
