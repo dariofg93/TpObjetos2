@@ -8,9 +8,7 @@ public class Modelo {
 	private Equipamiento equipamiento;
 	private Float valorDelModelo;
 	
-	public Modelo(String aName, Integer year, Integer doors, 
-					Equipamiento equipment, Float value){
-		
+	public Modelo(String aName, Integer year, Integer doors, Equipamiento equipment, Float value){
 		this.nombre = aName;
 		this.añoDeLanzamiento = year;
 		this.cantidadDePuertas = doors;
