@@ -75,4 +75,9 @@ public class Planta {
 			registros.add(creador.nuevoRegistro(model));
 		}
 	}
+
+	public void cambiarValorDeTodos(Float porcent) {
+		for(RegistroDeModelo r: registros)
+			r.cambiarPrecio(porcent);
+	}
 }

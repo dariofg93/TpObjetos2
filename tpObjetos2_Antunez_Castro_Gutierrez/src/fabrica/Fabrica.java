@@ -69,4 +69,14 @@ public class Fabrica {
 		int winner = (int)(rnd.nextDouble() * (plantas.size()-1));
 		return plantas.get(winner);
 	}
+	
+	public void cambiarValorMovil(Float porcent, Modelo model){
+		for(Planta p: plantasConModelo(model))
+			p.buscarRegistroDelModelo(model).cambiarPrecio(porcent);
+	}
+	
+	public void cambiarValorTodos(Float porcent){
+		for(Planta p: plantas)
+			p.cambiarValorDeTodos(porcent);
+	}
 }

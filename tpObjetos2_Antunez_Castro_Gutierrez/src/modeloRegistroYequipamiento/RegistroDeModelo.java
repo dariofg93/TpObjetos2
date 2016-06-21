@@ -38,4 +38,8 @@ public class RegistroDeModelo {
 	public Integer getCantidad() {
 		return cantidad;
 	}
+
+	public void cambiarPrecio(Float porcent) {
+		modelo.cambiarPrecio(porcent);
+	}
 }
