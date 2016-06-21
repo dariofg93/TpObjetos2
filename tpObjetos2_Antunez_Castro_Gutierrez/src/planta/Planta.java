@@ -3,6 +3,8 @@ package planta;
 import java.util.ArrayList;
 import java.util.List;
 
+import excepciones.ExceptionStock;
+import inicializadores.RecordsCreator;
 import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
 
@@ -10,68 +12,42 @@ import modeloRegistroYequipamiento.RegistroDeModelo;
 
 public class Planta {
 
-	/** Variables*/
-	
-	// La ubicacion de la planta.
 	private String direccion;
-
-	// Sublista de los registros de los modelos pertenecientes a su Fabrica.
 	private List<RegistroDeModelo> registros;
-	
-	/** Instanciando la clase */
-	
-	public Planta(String unaDireccion){
-		this.setDireccion(unaDireccion);
+	private RecordsCreator creador;
 		
-		// Se instancia a los modelos como un arreglo.
-		// Podria ser un conjunto sin repetidos, pero se tienen en cuenta que
-		// no se guardan registros con modelos iguales entre ellos.
-		this.setModelos(new ArrayList<RegistroDeModelo>());
+	public Planta(String unaDireccion){
+		this.direccion = unaDireccion;
+		this.registros = new ArrayList<RegistroDeModelo>();
+		this.creador = new RecordsCreator();
 	}
-	
-	/** Otros mensajes */
 	
 	// Devuelve el nombre de todos los modelos que produce.
 	public List<String> nombreDeLosModelos() {
 		List<String> todosLosNombres = new ArrayList<String>();
 		
-		for (RegistroDeModelo unModelo: this.getRegistros()){
+		for (RegistroDeModelo unModelo: registros){
 			todosLosNombres.add(unModelo.getNombreDelModelo());
 		}
-
 		return todosLosNombres;
 	}
 	
-	/** Quita un ejemplar del modelo que tenga el nombre dado.
-	 *  */
 	public RegistroDeModelo buscarRegistroDelModelo(Modelo modelo) {
 		RegistroDeModelo registroEncontrado = registros.get(0);
 		
-		for (RegistroDeModelo unRegistro: this.getRegistros()){
+		for (RegistroDeModelo unRegistro: registros){
 			if (unRegistro.getNombreDelModelo().equals(modelo.getNombre())){
 				registroEncontrado = unRegistro;
 			}
 		}
-		
 		return registroEncontrado;
 	}
 	
-	public Integer stock(Modelo modelo) {
-		RegistroDeModelo registroBuscado = registros.get(0);
+	public Integer stock(Modelo modelo) throws ExceptionStock{		
+		if(!perteneceModelo(modelo))
+			throw new ExceptionStock();
 		
-		if(perteneceModelo(modelo)){
-			for (RegistroDeModelo unRegistro: this.getRegistros()){
-				if (unRegistro.getNombreDelModelo().equals(modelo.getNombre())){
-					registroBuscado = unRegistro;
-					break;
-				}
-			}
-			return registroBuscado.getCantidad();
-		}
-		
-		else{
-			return 0;
-		}
+		return buscarRegistroDelModelo(modelo).getCantidad();
 	}
 	
 	private Boolean perteneceModelo(Modelo modelo) {
@@ -88,21 +64,15 @@ public class Planta {
 		}
 	}
 	
-	// Getters and Setters
-	
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	public List<RegistroDeModelo> getRegistros() {
-		return registros;
-	}
-
-	public void setModelos(List<RegistroDeModelo> modelos) {
-		this.registros = modelos;
+	public void sumarEjemplar(Modelo model){
+		RegistroDeModelo registro = null;
+		if(perteneceModelo(model))
+			registro = buscarRegistroDelModelo(model);
+		
+		if(registro != null){
+			registro.sumarUnidad();
+		} else{
+			registros.add(creador.nuevoRegistro(model));
+		}
 	}
 }

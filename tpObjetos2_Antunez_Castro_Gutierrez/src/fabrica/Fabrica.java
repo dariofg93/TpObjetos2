@@ -2,6 +2,7 @@ package fabrica;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import concesionaria.Concesionaria;
 import excepciones.ExceptionStock;
@@ -22,15 +23,17 @@ public class Fabrica {
 	
 	public Integer stock(Modelo modelo) throws ExceptionStock{
 		Integer total = 0;
-		for(Planta unaPlanta : buscarPlantasConModelo(modelo))
-			total += unaPlanta.stock(modelo);
+		List<Planta> plantas = plantasConModelo(modelo);
 		
-		if(total == 0)
+		if(plantas.size()==0)
 			throw new ExceptionStock();
+		for(Planta unaPlanta : plantas)
+			total += unaPlanta.stock(modelo);
+	
 		return total;
 	}
 	
-	public ArrayList<Planta> buscarPlantasConModelo(Modelo modelo){
+	public ArrayList<Planta> plantasConModelo(Modelo modelo){
 		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
 		
 		for(Planta unaPlanta: plantas){
@@ -40,11 +43,11 @@ public class Fabrica {
 		return plantasEncontradas;
 	}
 	
-	//El modelo se encuentra en el stock de la concesionaria
+	//Dado un modelo, devuelve la planta mas cercana a la concesionaria que tenga el modelo
 	public Planta plantaMasCercanaAConcesionaria(Modelo model){
-		Planta retorno = buscarPlantasConModelo(model).get(0);
+		Planta retorno = plantasConModelo(model).get(0);
 			
-		for(Planta unaPlanta: buscarPlantasConModelo(model)){
+		for(Planta unaPlanta: plantasConModelo(model)){
 			if(miConcesionaria.getCalculadora().calcularDistancia(unaPlanta)    
 										<
 				miConcesionaria.getCalculadora().calcularDistancia(retorno))
@@ -55,5 +58,15 @@ public class Fabrica {
 	
 	public void quitarEjemplar(Modelo model) {
 		plantaMasCercanaAConcesionaria(model).quitarEjemplar(model);
+	}
+	
+	public void sumarEjemplar(Modelo model) {
+		cualquierPlanta().sumarEjemplar(model);
+	}
+
+	public Planta cualquierPlanta() {
+		Random  rnd = new Random();
+		int winner = (int)(rnd.nextDouble() * (plantas.size()-1));
+		return plantas.get(winner);
 	}
 }

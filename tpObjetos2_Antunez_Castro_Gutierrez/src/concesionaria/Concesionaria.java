@@ -113,14 +113,12 @@ public class Concesionaria {
 	}
 	
 	public Integer stock(Modelo modelo){
-		Integer total = 0;
 		try{
-			total = miFabrica.stock(modelo);
+			return miFabrica.stock(modelo);
+		}catch(ExceptionStock arg){
+			System.out.println(arg.getMessage());
+			return 0;
 		}
-		catch(ExceptionStock arg){
-			System.out.println(arg);
-		}
-		return total;
 	}
 
 	public Float montoDelSeguro(Participante p, Modelo modelo) {

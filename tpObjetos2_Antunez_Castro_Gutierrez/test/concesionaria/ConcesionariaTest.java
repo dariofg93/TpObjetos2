@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import fabrica.Fabrica;
+import modeloRegistroYequipamiento.Modelo;
 import planta.Planta;
 
 public class ConcesionariaTest {
@@ -33,6 +34,14 @@ public class ConcesionariaTest {
 		Float precioXkm = 20.5f;
 		
 		assertTrue(res>0f && res<=500f*precioXkm);
+	}
+	
+	@Test
+	public void testStock() {			//Agregar caso con fabrica de verdad si hace falta
+		Modelo modeloMock = mock(Modelo.class);
+		
+		Integer cant = concesionariaTest.stock(modeloMock);		
+		assertTrue(cant.equals(0));
 	}
 	/*
 	@Test
