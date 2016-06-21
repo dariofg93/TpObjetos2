@@ -24,11 +24,11 @@ public class Modelo {
 		return nombre;
 	}
 
-	public Float porcentajeDelModelo(Integer porcent) {
+	public Float porcentajeDelPrecio(Float porcent) {
 		return (valorDelModelo * porcent) / 100;
 	}
 
 	public void cambiarPrecio(Float porcent) {
-		valorDelModelo += ((valorDelModelo * porcent)/100);
+		valorDelModelo += porcentajeDelPrecio(porcent);
 	}
 }

@@ -7,6 +7,6 @@ public class ExceptionStock extends RuntimeException{
 	}
 	
 	public ExceptionStock(String str){
-		super(str+" en el modelo");
+		super(str+" del modelo");
 	}
 }

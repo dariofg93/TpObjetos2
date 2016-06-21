@@ -23,11 +23,11 @@ public class Fabrica {
 	
 	public Integer stock(Modelo modelo) throws ExceptionStock{
 		Integer total = 0;
-		List<Planta> plantas = plantasConModelo(modelo);
+		List<Planta> plantasEncontradas = plantasConModelo(modelo);
 		
-		if(plantas.size()==0)
+		if(plantasEncontradas.size()==0)
 			throw new ExceptionStock();
-		for(Planta unaPlanta : plantas)
+		for(Planta unaPlanta : plantasEncontradas)
 			total += unaPlanta.stock(modelo);
 	
 		return total;
@@ -78,5 +78,9 @@ public class Fabrica {
 	public void cambiarValorTodos(Float porcent){
 		for(Planta p: plantas)
 			p.cambiarValorDeTodos(porcent);
+	}
+	
+	public void inaugurarPlanta(Planta unaPlanta){
+		plantas.add(unaPlanta);
 	}
 }

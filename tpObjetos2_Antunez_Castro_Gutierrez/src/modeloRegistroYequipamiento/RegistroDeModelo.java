@@ -28,7 +28,9 @@ public class RegistroDeModelo {
 		cantidad++;
 	}
 	
-	// Getters y Setters
+	public void cambiarPrecio(Float porcent) {
+		modelo.cambiarPrecio(porcent);
+	}
 	
 	public Modelo getModelo() {
 		return modelo;
@@ -39,7 +41,4 @@ public class RegistroDeModelo {
 		return cantidad;
 	}
 
-	public void cambiarPrecio(Float porcent) {
-		modelo.cambiarPrecio(porcent);
-	}
 }

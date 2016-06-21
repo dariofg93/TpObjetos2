@@ -11,7 +11,7 @@ public class CompañiaAseguradora {
 		
 		if(i>0)
 			total = total + 10 * i;
-		return total + modelo.porcentajeDelModelo(5);
+		return total + modelo.porcentajeDelPrecio(5f);
 	}
 
 	

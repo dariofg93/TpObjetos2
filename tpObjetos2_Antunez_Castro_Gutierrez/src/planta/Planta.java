@@ -32,6 +32,7 @@ public class Planta {
 		return todosLosNombres;
 	}
 	
+	//Prec.: Hay por lo menos un registro de algun modelo
 	public RegistroDeModelo buscarRegistroDelModelo(Modelo modelo) {
 		RegistroDeModelo registroEncontrado = registros.get(0);
 		
@@ -54,30 +55,41 @@ public class Planta {
 		return nombreDeLosModelos().contains(modelo.getNombre());
 	}
 	
-	public void quitarEjemplar(Modelo modelo){
+	public void quitarEjemplar(Modelo modelo) throws ExceptionStock{
+		if(!perteneceModelo(modelo))
+			throw new ExceptionStock();
+		
 		RegistroDeModelo registro = buscarRegistroDelModelo(modelo);
 		
 		if(registro.getCantidad()>1){
 			registro.descontarUnidad();
 		} else{
-			registros.remove(registro);
+			quitarRegistro(registro);
 		}
 	}
-	
-	public void sumarEjemplar(Modelo model){
+
+	public void sumarEjemplar(Modelo modelo){
 		RegistroDeModelo registro = null;
-		if(perteneceModelo(model))
-			registro = buscarRegistroDelModelo(model);
+		if(perteneceModelo(modelo))
+			registro = buscarRegistroDelModelo(modelo);
 		
 		if(registro != null){
 			registro.sumarUnidad();
 		} else{
-			registros.add(creador.nuevoRegistro(model));
+			agregarRegistro(creador.nuevoRegistro(modelo));
 		}
 	}
 
 	public void cambiarValorDeTodos(Float porcent) {
 		for(RegistroDeModelo r: registros)
 			r.cambiarPrecio(porcent);
+	}
+	
+	public void agregarRegistro(RegistroDeModelo unRegistro) {
+		registros.add(unRegistro);
+	}
+
+	public void quitarRegistro(RegistroDeModelo unRegistro) {
+		registros.remove(unRegistro);
 	}
 }
