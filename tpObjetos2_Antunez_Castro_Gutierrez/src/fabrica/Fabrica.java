@@ -19,7 +19,9 @@ public class Fabrica {
 		this.miConcesionaria = unaConcesionaria;
 	}
 	
-	// Otros mensajes
+	public List<Planta> getPlantas() {
+		return plantas;
+	}
 	
 	public Integer stock(Modelo modelo) throws ExceptionStock{
 		Integer total = 0;
@@ -33,16 +35,16 @@ public class Fabrica {
 		return total;
 	}
 	
-	public ArrayList<Planta> plantasConModelo(Modelo modelo){
+	private ArrayList<Planta> plantasConModelo(Modelo modelo){
 		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
 		
-		for(Planta unaPlanta: plantas){
+		for(Planta unaPlanta: getPlantas()){
 			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
 				plantasEncontradas.add(unaPlanta);
 		}
 		return plantasEncontradas;
 	}
-	
+
 	//Dado un modelo, devuelve la planta mas cercana a la concesionaria que tenga el modelo
 	public Planta plantaMasCercanaAConcesionaria(Modelo model){
 		Planta retorno = plantasConModelo(model).get(0);

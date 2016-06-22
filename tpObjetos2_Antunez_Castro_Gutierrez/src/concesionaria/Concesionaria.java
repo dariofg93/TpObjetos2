@@ -3,8 +3,6 @@ package concesionaria;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Matchers;
-
 import aseguradora.CompañiaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
@@ -62,6 +60,14 @@ public class Concesionaria {
 		return planes;
 	}
 	
+	public List<Cliente> getClientes() {
+		return clientes;
+	}
+	
+	public List<CuponDeAdjudicacion> getCupones() {
+		return cupones;
+	}
+	
 	public void crearPlan(PlanDeAhorro plan){
 		planes.add(plan);
 	}
@@ -98,7 +104,7 @@ public class Concesionaria {
 	
 	public void sortearMovil(PlanDeAhorro plan)/*throws SinParticipantesException*/{
 			CuponDeAdjudicacion cupon = plan.elegirGanador(); //Mejor que devuelva un participante
-			emitirCupon(cupon);
+			emitirCupon(cupon);					//PENDIENTE DE TESTEO...
 	}
 	
 	public void emitirCupon(CuponDeAdjudicacion cupon){
@@ -106,16 +112,16 @@ public class Concesionaria {
 		cupones.add(cupon);
 	}
 	
+	//Prec.: El cupon existe en la lista de cupones de adjudicacion
+	public void registrarPagoDelCupon(CuponDeAdjudicacion cupon){
+		cupones.remove(cupon);
+	}
+	
 	/**
 	 * Obs: El flete es igual a $20,50 por Kilometro.
 	 */
 	public Float gastoDeFlete(Planta unaPlanta){
 		return calculadora.calcularDistancia(unaPlanta) * 20.5f;
-	}
-	
-	//Prec.: El cupon existe en la lista de cupones de adjudicacion
-	public void registrarPagoDelCupon(CuponDeAdjudicacion cupon){
-		cupones.remove(cupon);
 	}
 	
 	public Integer stock(Modelo modelo){
@@ -129,5 +135,9 @@ public class Concesionaria {
 
 	public Float montoDelSeguro(Participante p, Modelo modelo) {
 		return compañia.montoDelSeguro(p,modelo);
+	}
+	
+	public void suscribirClienteAPlan(Cliente c, PlanDeAhorro p){
+		p.suscribirCliente(c);
 	}
 }

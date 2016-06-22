@@ -8,6 +8,7 @@ import cupon.CuponDeAdjudicacion;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
+import persona.Cliente;
 import persona.Participante;
 
 public class PlanDeAhorro {
@@ -124,5 +125,13 @@ public class PlanDeAhorro {
 		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
 		elGanador.fuiAdjudicado();
 		//Genererar cupon y devolverlo, return...
+	}
+
+	/**
+	 * Crea una instancia de participante utilizando el cliente dado por parametro y
+	 * su colaborador interno creado o como se llame... y lo agrega a su lista de participantes
+	 */
+	public void suscribirCliente(Cliente c) {
+		// TODO Auto-generated method stub	
 	}
 }
