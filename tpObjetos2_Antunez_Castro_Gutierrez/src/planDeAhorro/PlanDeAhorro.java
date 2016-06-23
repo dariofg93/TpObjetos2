@@ -5,6 +5,7 @@ import java.util.List;
 
 import concesionaria.Concesionaria;
 import cupon.CuponDeAdjudicacion;
+import excepciones.ExceptionParticipante;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
@@ -120,10 +121,11 @@ public class PlanDeAhorro {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 	
-	public CuponDeAdjudicacion elegirGanador()/* throws SinParticipantesException*/{
+	public CuponDeAdjudicacion elegirGanador() throws ExceptionParticipante{
 		
 		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
 		elGanador.fuiAdjudicado();
+		
 		//Genererar cupon y devolverlo, return...
 	}
 

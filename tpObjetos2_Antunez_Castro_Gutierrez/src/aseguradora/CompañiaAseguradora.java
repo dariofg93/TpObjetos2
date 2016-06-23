@@ -9,9 +9,11 @@ public class CompañiaAseguradora {
 		Float total = 50f;
 		Integer i = p.edad()-50;
 		
-		if(i>0)
-			total = total + 10 * i;
-		return total + modelo.porcentajeDelPrecio(5f);
+		if(i>0){
+				total = total + 10 * i;
+		       }
+				return total + modelo.porcentajeDelPrecio(5f);
+		       	
 	}
 
 	

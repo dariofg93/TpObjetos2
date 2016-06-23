@@ -40,4 +40,12 @@ public class Participante{
 	public Cliente getCliente() {
 		return cliente;
 	}
+	
+	public Date getFecNac(){
+		return cliente.getFecNac();
+	}
+	
+	public Date getFechaDeInscripcion(){
+		return fechaInscripcion;
+	}
 }
