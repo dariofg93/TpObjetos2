@@ -3,7 +3,7 @@ package aseguradora;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Participante;
 
-public class CompañiaAseguradora {
+public class CompaniaAseguradora {
 
 	public Float montoDelSeguro(Participante p, Modelo modelo) {
 		Float total = 50f;

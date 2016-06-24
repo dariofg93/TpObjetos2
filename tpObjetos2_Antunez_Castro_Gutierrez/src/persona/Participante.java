@@ -48,4 +48,8 @@ public class Participante{
 	public Date getFechaDeInscripcion(){
 		return fechaInscripcion;
 	}
+	
+	public void agregarCuota(ComprobanteDePago comp){
+		comprobantes.add(comp);
+	}
 }

@@ -3,11 +3,13 @@ package concesionaria;
 import java.util.ArrayList;
 import java.util.List;
 
-import aseguradora.CompañiaAseguradora;
+import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
+import excepciones.ExceptionParticipante;
 import excepciones.ExceptionStock;
 import fabrica.Fabrica;
+import inicializadores.CuponCreator;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Cliente;
 import persona.Participante;
@@ -16,14 +18,16 @@ import planta.Planta;
 
 public class Concesionaria {
 
+	@SuppressWarnings("unused")
 	private String direccion;
 	private CalculadorDeDistancia calculadora;
 	private Fabrica miFabrica;
 	private List<Cliente> clientes;
 	private List<PlanDeAhorro> planes;
 	private Float gananciaAdministrativa;
-	private CompañiaAseguradora compañia;
+	private CompaniaAseguradora compañia;
 	private List<CuponDeAdjudicacion> cupones;
+	private CuponCreator creadorCupon;
 	
 	public Concesionaria(String lugar, Float ganancia){
 		this.direccion = lugar;
@@ -32,15 +36,16 @@ public class Concesionaria {
 		this.clientes = new ArrayList<Cliente>();
 		this.planes = new ArrayList<PlanDeAhorro>();
 		this.gananciaAdministrativa = ganancia;
-		this.compañia = new CompañiaAseguradora();
+		this.compañia = new CompaniaAseguradora();
 		this.cupones = new ArrayList<CuponDeAdjudicacion>();
+		this.creadorCupon = new CuponCreator();
 	}
 	
 	public void setCalculadora(CalculadorDeDistancia calc){
 		this.calculadora = calc;
 	}
 	
-	public void setCompañia(CompañiaAseguradora comp){
+	public void setCompañia(CompaniaAseguradora comp){
 		this.compañia = comp;
 	}
 	
@@ -102,9 +107,14 @@ public class Concesionaria {
 		return winner;
 	}
 	
-	public void sortearMovil(PlanDeAhorro plan)/*throws SinParticipantesException*/{
-			CuponDeAdjudicacion cupon = plan.elegirGanador(); //Mejor que devuelva un participante
-			emitirCupon(cupon);					//PENDIENTE DE TESTEO...
+	public void sortearMovil(PlanDeAhorro plan){
+		Participante winner;
+		try{
+			winner = plan.elegirGanador();
+			emitirCupon(creadorCupon.crearCupon(plan,winner));	
+		}catch(ExceptionParticipante arg){
+			System.out.println(arg.getMessage());
+		}		
 	}
 	
 	public void emitirCupon(CuponDeAdjudicacion cupon){

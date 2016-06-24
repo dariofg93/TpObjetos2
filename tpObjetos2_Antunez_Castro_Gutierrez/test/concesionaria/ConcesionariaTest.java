@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import aseguradora.CompañiaAseguradora;
+import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
 import fabrica.Fabrica;
@@ -121,7 +121,7 @@ public class ConcesionariaTest {
 	@Test
 	public void testMontoDelSeguro() {
 		Participante participanteMock = mock(Participante.class);
-		CompañiaAseguradora compañiaMock = mock(CompañiaAseguradora.class);
+		CompaniaAseguradora compañiaMock = mock(CompaniaAseguradora.class);
 		
 		concesionariaTest.setCompañia(compañiaMock);
 		when(compañiaMock.montoDelSeguro(participanteMock,modeloMock)).thenReturn(250f);

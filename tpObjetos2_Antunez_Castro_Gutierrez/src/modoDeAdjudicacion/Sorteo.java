@@ -7,24 +7,22 @@ import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
 public class Sorteo implements ModoDeAdjudicacion{
+	Random  rnd;
+	
+	public Sorteo(Random unRandom){
+		this.rnd = unRandom;
+	}
 	
 	@Override
 	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante {
-		Random  rnd = new Random();
 		Participante retorno = null;
 		
-		try {
-		
-			     int ganador = (int)(rnd.nextDouble() * plan.cantidadDeParticipantes()-1);
+		if(plan.participantesDisponibles().size()>0){
+			     int ganador = (int)(rnd.nextDouble() * plan.participantesDisponibles().size()-1);
 			     retorno = plan.participantesDisponibles().get(ganador);
-		    }
-		
-		catch (ArrayIndexOutOfBoundsException excepcion) {
+		}else{
 			throw new ExceptionParticipante();
 		}
-		
 		return retorno;
 	}
-	
-	
 }

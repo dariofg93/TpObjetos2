@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import concesionaria.Concesionaria;
-import cupon.CuponDeAdjudicacion;
 import excepciones.ExceptionParticipante;
 import financiamiento.Financiamiento;
 import modeloRegistroYequipamiento.Modelo;
@@ -121,12 +120,18 @@ public class PlanDeAhorro {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 	
-	public CuponDeAdjudicacion elegirGanador() throws ExceptionParticipante{
+	public Participante elegirGanador() throws ExceptionParticipante{
 		
-		Participante elGanador = modoDeAdjudicacion.elegirConcursante(this);
-		elGanador.fuiAdjudicado();
+		Participante elGanador;
 		
-		//Genererar cupon y devolverlo, return...
+		if(participantesDisponibles().size()>0){
+			elGanador = modoDeAdjudicacion.elegirConcursante(this);
+			elGanador.fuiAdjudicado();
+		}else{
+			throw new ExceptionParticipante();
+		}
+		
+		return elGanador;
 	}
 
 	/**
