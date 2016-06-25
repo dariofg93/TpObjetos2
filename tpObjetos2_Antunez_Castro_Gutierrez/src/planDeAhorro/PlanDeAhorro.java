@@ -31,18 +31,57 @@ public class PlanDeAhorro {
 		this.modoDeAdjudicacion = unModo;
 		this.concesionaria = unaConcesionaria;
 	}
-
+	
+	public Integer getNumeroDeGrupo() {
+		return numeroDeGrupo;
+	}
+	
+	public Concesionaria getConcesionaria() {
+		return concesionaria;
+	}
+	
+	public List<Participante> getParticipantes() {
+		return this.suscriptos;
+	}
+	
 	public int cantidadDeParticipantes() {
 		return this.suscriptos.size();
 	}
 
+	/**
+	 * Crea una instancia de participante utilizando el cliente dado por parametro y
+	 * su colaborador interno creado o como se llame... y lo agrega a su lista de participantes
+	 */
+	public void suscribirCliente(Cliente c) {
+		// TODO Auto-generated method stub	
+	}
+
+	public Boolean hayParticipantesDisponibles() {
+		return participantesDisponibles().size() > 0;
+	}
+	
 	public Modelo getModelo() {
 		return this.modeloSuscripto;
 	}
 
-	public List<Participante> getParticipantes() {
-		return this.suscriptos;
+	public List<Participante> participantesDisponibles() throws ExceptionParticipante{
+		ArrayList<Participante> disponibles = new ArrayList<>();
+		
+		for(Participante p: suscriptos)
+			if(p.estaDisponible()) disponibles.add(p);
+		/**												
+		if(disponibles.size()==0)
+			throw new ExceptionParticipante(); */
+		
+		return disponibles;
 	}
+	
+	
+	public Integer cantidadDeParticipantesDisponibles() {
+		return participantesDisponibles().size();
+	}
+	
+	
 	
 	public List<Participante> losQueMasPagaron(){
 		List<Participante>  ganadores = new ArrayList<Participante>();
@@ -64,21 +103,7 @@ public class PlanDeAhorro {
 		return mayorPagas;
 	}
 	
-	public List<Participante> participantesDisponibles() throws ExceptionParticipante{
-		ArrayList<Participante> disponibles = new ArrayList<>();
-		
-		for(Participante p: suscriptos)
-			if(p.estaDisponible()) disponibles.add(p);
-		
-		if(disponibles.size()==0)
-			throw new ExceptionParticipante();
-		
-		return disponibles;
-	}
 	
-	public Integer cantidadDeParticipantesDisponibles() {
-		return participantesDisponibles().size();
-	}
 
 	public List<Participante> losMasViejos(List<Participante> ganadores){
 		List<Participante> mayores = new ArrayList<Participante>();
@@ -100,9 +125,7 @@ public class PlanDeAhorro {
 		return mayor;
 	}
 
-	public Integer getNumeroDeGrupo() {
-		return numeroDeGrupo;
-	}
+	
 	
 	public Participante elPrimerSuscriptor(List<Participante> ganadores){
 		Participante elGanador = ganadores.get(0);
@@ -114,9 +137,7 @@ public class PlanDeAhorro {
 		return elGanador;
 	}
 
-	public Concesionaria getConcesionaria() {
-		return concesionaria;
-	}
+	
 
 	public Float calcularAlicuota() {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
@@ -136,15 +157,9 @@ public class PlanDeAhorro {
 		return elGanador;
 	}
 
-	/**
-	 * Crea una instancia de participante utilizando el cliente dado por parametro y
-	 * su colaborador interno creado o como se llame... y lo agrega a su lista de participantes
-	 */
-	public void suscribirCliente(Cliente c) {
-		// TODO Auto-generated method stub	
+	public Float montoDelFinanciamiento() {
+		return financiamiento.totalAabonar(this);
 	}
 
-	public Boolean hayParticipantesDisponibles() {
-		return participantesDisponibles().size() > 0;
-	}
+	
 }
