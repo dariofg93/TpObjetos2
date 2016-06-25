@@ -14,15 +14,12 @@ public class Sorteo implements ModoDeAdjudicacion{
 	}
 	
 	@Override
-	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante {
-		Participante retorno = null;
-		
-		if(plan.participantesDisponibles().size()>0){
-			     int ganador = (int)(rnd.nextDouble() * plan.participantesDisponibles().size()-1);
-			     retorno = plan.participantesDisponibles().get(ganador);
+	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante{
+		if(plan.hayParticipantesDisponibles()){
+			int ganador = (int)(rnd.nextDouble() * plan.participantesDisponibles().size()-1);
+			return plan.participantesDisponibles().get(ganador);
 		}else{
 			throw new ExceptionParticipante();
 		}
-		return retorno;
 	}
 }

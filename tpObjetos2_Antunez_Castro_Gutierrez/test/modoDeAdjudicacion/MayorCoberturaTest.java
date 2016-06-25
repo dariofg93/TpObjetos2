@@ -1,7 +1,8 @@
 package modoDeAdjudicacion;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,17 +15,15 @@ import excepciones.ExceptionParticipante;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
-public class SorteoTest {
+public class MayorCoberturaTest {
 
-	Sorteo sorteoTest;
-	Random randomMock;
+	MayorCobertura mayorCoberturaTest;
 	PlanDeAhorro planMock;
 	
 	@Before
 	public void setUp(){
-		randomMock = mock(Random.class);
 		planMock = mock(PlanDeAhorro.class);
-		sorteoTest = new Sorteo(randomMock);
+		mayorCoberturaTest = new MayorCobertura();
 	}
 	
 	@Test(expected = ExceptionParticipante.class)
@@ -34,13 +33,12 @@ public class SorteoTest {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		when(planMock.participantesDisponibles()).thenReturn(disponibles);
-		when(randomMock.nextDouble()).thenReturn(0.5);
 		
-		assertEquals(sorteoTest.elegirConcursante(planMock),participanteMock);
+		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock);
 		////
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		//Mockito.doThrow(new ExceptionParticipante()).when(planMock).participantesDisponibles();
 		
-		sorteoTest.elegirConcursante(planMock);
+		mayorCoberturaTest.elegirConcursante(planMock);
 	}
 }

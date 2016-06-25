@@ -64,13 +64,15 @@ public class PlanDeAhorro {
 		return mayorPagas;
 	}
 	
-	public ArrayList<Participante> participantesDisponibles() {
+	public List<Participante> participantesDisponibles() throws ExceptionParticipante{
 		ArrayList<Participante> disponibles = new ArrayList<>();
 		
-		for(Participante p: suscriptos){
-			if(p.estaDisponible())
-				disponibles.add(p);
-		}
+		for(Participante p: suscriptos)
+			if(p.estaDisponible()) disponibles.add(p);
+		
+		if(disponibles.size()==0)
+			throw new ExceptionParticipante();
+		
 		return disponibles;
 	}
 	
@@ -140,5 +142,9 @@ public class PlanDeAhorro {
 	 */
 	public void suscribirCliente(Cliente c) {
 		// TODO Auto-generated method stub	
+	}
+
+	public Boolean hayParticipantesDisponibles() {
+		return participantesDisponibles().size() > 0;
 	}
 }
