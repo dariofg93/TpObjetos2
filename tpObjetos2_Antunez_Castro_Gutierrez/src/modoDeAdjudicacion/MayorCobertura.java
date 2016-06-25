@@ -14,21 +14,23 @@ public class MayorCobertura implements ModoDeAdjudicacion{
 		Participante retorno;
 		List<Participante> pagadores = plan.losQueMasPagaron();
 		
-		if (!plan.hayParticipantesDisponibles()){
-			throw new ExceptionParticipante();
-		}else{
+		if (plan.hayParticipantesDisponibles()){
 			if(pagadores.size()==1){
 				retorno = pagadores.get(0);
 			}
 			else{
-				if(plan.losMasViejos(pagadores).size()==1){
-					retorno = plan.losMasViejos(pagadores).get(0);	
-				} 
-				else{
-					retorno = plan.elPrimerSuscriptor(plan.losMasViejos(pagadores));
-				}
+				retorno = findWinner(pagadores,plan);
 			}
+		}else{
+			throw new ExceptionParticipante();
 		}
 		return retorno;
+	}
+	
+	private Participante findWinner(List<Participante> pagadores, PlanDeAhorro plan){
+		if(plan.losMasViejos(pagadores).size()==1)
+			return plan.losMasViejos(pagadores).get(0);	 
+		
+		return plan.elPrimerSuscriptor(plan.losMasViejos(pagadores));
 	}
 }

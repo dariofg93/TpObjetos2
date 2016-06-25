@@ -27,8 +27,8 @@ public class SorteoTest {
 		sorteoTest = new Sorteo(randomMock);
 	}
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanador() {
+	@Test
+	public void testElegirGanadorConDisponibles() {
 		Participante participanteMock = mock(Participante.class);
 		List<Participante> disponibles = Arrays.asList(participanteMock);
 		
@@ -37,7 +37,10 @@ public class SorteoTest {
 		when(randomMock.nextDouble()).thenReturn(0.5);
 		
 		assertEquals(sorteoTest.elegirConcursante(planMock),participanteMock);
-		////
+	}
+	
+	@Test(expected = ExceptionParticipante.class)
+	public void testElegirGanadorSinDisponibles() {
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		//Mockito.doThrow(new ExceptionParticipante()).when(planMock).participantesDisponibles();
 		

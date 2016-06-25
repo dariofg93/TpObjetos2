@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,18 +25,52 @@ public class MayorCoberturaTest {
 		mayorCoberturaTest = new MayorCobertura();
 	}
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanador() {
-		Participante participanteMock = mock(Participante.class);
-		List<Participante> disponibles = Arrays.asList(participanteMock);
+	@Test
+	public void testElegirGanadorUnSoloPagador() {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
-		when(planMock.participantesDisponibles()).thenReturn(disponibles);
 		
-		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock);
-		////
+		Participante participanteMock1 = mock(Participante.class);
+		when(planMock.losQueMasPagaron()).thenReturn(Arrays.asList(participanteMock1));
+		
+		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock1);
+	}
+	
+	@Test
+	public void testElegirGanadorMasDeUnPagadorUnoMasViejo() {
+		
+		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
+		
+		Participante participanteMock1 = mock(Participante.class);
+		Participante participanteMock2 = mock(Participante.class);
+		
+		List<Participante> pagadores = Arrays.asList(participanteMock1,participanteMock2);
+		when(planMock.losQueMasPagaron()).thenReturn(pagadores);
+		when(planMock.losMasViejos(pagadores)).thenReturn(Arrays.asList(participanteMock1));
+		
+		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock1);
+	}
+	
+	@Test
+	public void testElegirGanadorMasDeUnPagadorVariosMasViejos() {
+		
+		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
+		
+		Participante participanteMock1 = mock(Participante.class);
+		Participante participanteMock2 = mock(Participante.class);
+		
+		List<Participante> pagadores = Arrays.asList(participanteMock1,participanteMock2);
+		when(planMock.losQueMasPagaron()).thenReturn(pagadores);
+		when(planMock.losMasViejos(pagadores)).thenReturn(pagadores);
+		when(planMock.elPrimerSuscriptor(planMock.losMasViejos(pagadores))).thenReturn(participanteMock1);
+		
+		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock1);
+	}
+	
+	@Test(expected = ExceptionParticipante.class)
+	public void testElegirGanadorNingunDisponible() {
+		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
-		//Mockito.doThrow(new ExceptionParticipante()).when(planMock).participantesDisponibles();
 		
 		mayorCoberturaTest.elegirConcursante(planMock);
 	}
