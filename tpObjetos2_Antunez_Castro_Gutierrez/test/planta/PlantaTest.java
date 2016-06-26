@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import excepciones.ExceptionStock;
+import excepciones.SinStockExcepcion;
 import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
 
@@ -50,20 +50,20 @@ public class PlantaTest {
 	}
 	
 	@Test
-	public void testStockDisponibleYsumarEjemplar(){
+	public void testStockDisponibleYsumarEjemplar() throws SinStockExcepcion{
 		
 		plantaTest.sumarEjemplar(modeloMock1);
 		assertTrue(plantaTest.stock(modeloMock1).equals(1));
 	}
 	
-	@Test(expected = ExceptionStock.class)
-	public void testStockNoDisponible(){
+	@Test(expected = SinStockExcepcion.class)
+	public void testStockNoDisponible() throws SinStockExcepcion{
 		
 		plantaTest.stock(modeloMock1);
 	}
 	
 	@Test
-	public void testQuitarEjemplar(){
+	public void testQuitarEjemplar() throws SinStockExcepcion{
 		
 		plantaTest.sumarEjemplar(modeloMock1);
 		plantaTest.sumarEjemplar(modeloMock1);
@@ -72,8 +72,8 @@ public class PlantaTest {
 		plantaTest.quitarEjemplar(modeloMock1);
 	}
 	
-	@Test(expected = ExceptionStock.class)
-	public void testQuitarEjemplarNoHay(){
+	@Test(expected = SinStockExcepcion.class)
+	public void testQuitarEjemplarNoHay() throws SinStockExcepcion{
 		
 		plantaTest.quitarEjemplar(modeloMock1);
 	}

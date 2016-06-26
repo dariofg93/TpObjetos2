@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import concesionaria.Concesionaria;
-import excepciones.ExceptionStock;
+import excepciones.SinStockExcepcion;
 import modeloRegistroYequipamiento.Modelo;
 import planta.Planta;
 
@@ -27,7 +27,20 @@ public class Fabrica {
 		plantas.add(unaPlanta);
 	}
 	
-	public Integer stock(Modelo modelo){
+	public List<Planta> plantasConModelo(Modelo modelo) throws SinStockExcepcion{
+		List<Planta> plantasEncontradas = new ArrayList<>();
+		
+		for(Planta unaPlanta: getPlantas()){
+			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
+				plantasEncontradas.add(unaPlanta);
+		}
+		if(plantasEncontradas.size()==0)
+			throw new SinStockExcepcion();
+		
+		return plantasEncontradas;
+	}
+	
+	public Integer stock(Modelo modelo) throws SinStockExcepcion{
 		Integer total = 0;
 		List<Planta> plantasEncontradas = plantasConModelo(modelo);
 		
@@ -36,22 +49,9 @@ public class Fabrica {
 	
 		return total;
 	}
-	
-	private ArrayList<Planta> plantasConModelo(Modelo modelo) throws ExceptionStock{
-		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
-		
-		for(Planta unaPlanta: getPlantas()){
-			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
-				plantasEncontradas.add(unaPlanta);
-		}
-		if(plantasEncontradas.size()==0)
-			throw new ExceptionStock();
-		
-		return plantasEncontradas;
-	}
 
 	//Dado un modelo, devuelve la planta mas cercana a la concesionaria que tenga el modelo
-	public Planta plantaMasCercanaAConcesionaria(Modelo model){
+	public Planta plantaMasCercanaAConcesionaria(Modelo model) throws SinStockExcepcion{
 		Planta retorno = plantasConModelo(model).get(0);
 			
 		for(Planta unaPlanta: plantasConModelo(model)){
@@ -63,7 +63,7 @@ public class Fabrica {
 		return retorno;
 	}
 	
-	public void quitarEjemplar(Modelo model) {
+	public void quitarEjemplar(Modelo model) throws SinStockExcepcion {
 		plantaMasCercanaAConcesionaria(model).quitarEjemplar(model);
 	}
 	
@@ -77,7 +77,7 @@ public class Fabrica {
 		return plantas.get(winner);
 	}
 	
-	public void cambiarValorMovil(Float porcent, Modelo model){
+	public void cambiarValorMovil(Float porcent, Modelo model) throws SinStockExcepcion{
 		for(Planta p: plantasConModelo(model))
 			p.buscarRegistroDelModelo(model).cambiarPrecio(porcent);
 	}

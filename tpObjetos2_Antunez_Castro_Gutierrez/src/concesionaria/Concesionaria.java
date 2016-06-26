@@ -7,6 +7,8 @@ import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
 import excepciones.ExceptionParticipante;
+import excepciones.SinPlanesExcepcion;
+import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
 import inicializadores.CuponCreator;
 import modeloRegistroYequipamiento.Modelo;
@@ -72,6 +74,10 @@ public class Concesionaria {
 		return cupones;
 	}
 	
+	public void setCreador(CuponCreator unCreador) {
+		creadorCupon = unCreador;
+	}
+	
 	public void crearPlan(PlanDeAhorro plan){
 		planes.add(plan);
 	}
@@ -80,9 +86,13 @@ public class Concesionaria {
 		clientes.add(unCliente);
 	}
 	
-	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos(){
+	public void suscribirClienteAPlan(Cliente c, PlanDeAhorro p) throws SinPlanesExcepcion{
+		buscarPlan(p).suscribirCliente(c);
+	}
+	
+	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion{
 		List<PlanDeAhorro> orderedPlans = new ArrayList<PlanDeAhorro>();
-		List<PlanDeAhorro> allPlans = planes;
+		List<PlanDeAhorro> allPlans = iniciarRecorridoDePlanes();
 		Integer repetitions = 0;
 		
 		while(repetitions<10 && !(allPlans.isEmpty())){
@@ -97,7 +107,7 @@ public class Concesionaria {
 	
 	//Precondicion: hay por lo menos un plan en la concesionaria.
 	private PlanDeAhorro planConMasSubscriptos(List<PlanDeAhorro> plans){
-		PlanDeAhorro winner = planes.get(0);
+		PlanDeAhorro winner = plans.get(0);
 		
 		for(PlanDeAhorro current: plans){
 			if(current.cantidadDeParticipantes() > winner.cantidadDeParticipantes())
@@ -106,17 +116,13 @@ public class Concesionaria {
 		return winner;
 	}
 	
-	public void sortearMovil(PlanDeAhorro plan){
+	public void sortearMovil(PlanDeAhorro plan) throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
 		Participante winner;
-		try{
-			winner = plan.elegirGanador();
-			emitirCupon(creadorCupon.crearCupon(plan,winner));	
-		}catch(ExceptionParticipante arg){
-			System.out.println(arg.getMessage());
-		}		
+		winner = buscarPlan(plan).elegirGanador();
+		emitirCupon(creadorCupon.crearCupon(buscarPlan(plan),winner));	
 	}
 	
-	public void emitirCupon(CuponDeAdjudicacion cupon){
+	public void emitirCupon(CuponDeAdjudicacion cupon) throws SinStockExcepcion{
 		miFabrica.quitarEjemplar(cupon.getModelo());
 		cupones.add(cupon);
 	}
@@ -133,7 +139,7 @@ public class Concesionaria {
 		return calculadora.calcularDistancia(unaPlanta) * 20.5f;
 	}
 	
-	public Integer stock(Modelo modelo){
+	public Integer stock(Modelo modelo) throws SinStockExcepcion{
 		return miFabrica.stock(modelo);
 	}
 
@@ -141,7 +147,18 @@ public class Concesionaria {
 		return compañia.montoDelSeguro(p,modelo);
 	}
 	
-	public void suscribirClienteAPlan(Cliente c, PlanDeAhorro p){
-		p.suscribirCliente(c);
+	private PlanDeAhorro buscarPlan(PlanDeAhorro p) throws SinPlanesExcepcion {
+		PlanDeAhorro planFound = null;
+		for(PlanDeAhorro plan: iniciarRecorridoDePlanes()){
+			if(plan.getNumeroDeGrupo().equals(p.getNumeroDeGrupo()))
+				planFound = plan;
+		}
+		return planFound;
+	}
+
+	private List<PlanDeAhorro> iniciarRecorridoDePlanes() throws SinPlanesExcepcion{
+		if(planes.isEmpty())
+			throw new SinPlanesExcepcion();
+		return planes;
 	}
 }

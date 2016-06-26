@@ -13,8 +13,11 @@ import org.mockito.Mockito;
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
-import excepciones.ExceptionStock;
+import excepciones.ExceptionParticipante;
+import excepciones.SinPlanesExcepcion;
+import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
+import inicializadores.CuponCreator;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Cliente;
 import persona.Participante;
@@ -28,6 +31,7 @@ public class ConcesionariaTest {
 	Fabrica fabricaMock;
 	Planta plantaMock;
 	CuponDeAdjudicacion cuponMock;
+	PlanDeAhorro planMock;
 	
 	@Before
 	public void setUp(){
@@ -38,11 +42,12 @@ public class ConcesionariaTest {
 		plantaMock = mock(Planta.class);
 		cuponMock = mock(CuponDeAdjudicacion.class);
 			when(cuponMock.getModelo()).thenReturn(modeloMock);
+		planMock = mock(PlanDeAhorro.class);
 	}
 	
 	@Test
 	public void testCrearPlan() {
-		PlanDeAhorro planMock = mock(PlanDeAhorro.class);
+		planMock = mock(PlanDeAhorro.class);
 		concesionariaTest.crearPlan(planMock);
 		
 		assertTrue(concesionariaTest.getPlanes().contains(planMock));
@@ -57,28 +62,40 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testLosDiezPlanesConMasSubscriptos() {
-		assertEquals(concesionariaTest.losDiezPlanesConMasSubscriptos(),Arrays.asList());
+	public void testLosDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion {
+		PlanDeAhorro planMock1 = mock(PlanDeAhorro.class); PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock3 = mock(PlanDeAhorro.class); PlanDeAhorro planMock4 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock5 = mock(PlanDeAhorro.class); PlanDeAhorro planMock6 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock7 = mock(PlanDeAhorro.class); PlanDeAhorro planMock8 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock9 = mock(PlanDeAhorro.class); PlanDeAhorro planMock10 = mock(PlanDeAhorro.class);
 		
-		PlanDeAhorro planMock1 = mock(PlanDeAhorro.class);	when(planMock1.cantidadDeParticipantes()).thenReturn(1);	concesionariaTest.crearPlan(planMock1);
-		PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);	when(planMock2.cantidadDeParticipantes()).thenReturn(2);	concesionariaTest.crearPlan(planMock2);
-		PlanDeAhorro planMock3 = mock(PlanDeAhorro.class);	when(planMock3.cantidadDeParticipantes()).thenReturn(3);	concesionariaTest.crearPlan(planMock3);
-		PlanDeAhorro planMock4 = mock(PlanDeAhorro.class);	when(planMock4.cantidadDeParticipantes()).thenReturn(4);	concesionariaTest.crearPlan(planMock4);
-		PlanDeAhorro planMock5 = mock(PlanDeAhorro.class);	when(planMock5.cantidadDeParticipantes()).thenReturn(5);	concesionariaTest.crearPlan(planMock5);
-		PlanDeAhorro planMock6 = mock(PlanDeAhorro.class);	when(planMock6.cantidadDeParticipantes()).thenReturn(6);	concesionariaTest.crearPlan(planMock6);
-		PlanDeAhorro planMock7 = mock(PlanDeAhorro.class);	when(planMock7.cantidadDeParticipantes()).thenReturn(7);	concesionariaTest.crearPlan(planMock7);
-		PlanDeAhorro planMock8 = mock(PlanDeAhorro.class);	when(planMock8.cantidadDeParticipantes()).thenReturn(8);	concesionariaTest.crearPlan(planMock8);
-		PlanDeAhorro planMock9 = mock(PlanDeAhorro.class);	when(planMock9.cantidadDeParticipantes()).thenReturn(9);	concesionariaTest.crearPlan(planMock9);
-		PlanDeAhorro planMock10 = mock(PlanDeAhorro.class);	when(planMock10.cantidadDeParticipantes()).thenReturn(10);	concesionariaTest.crearPlan(planMock10);
-
-		List<PlanDeAhorro> planes = Arrays.asList(planMock10,planMock9,planMock8,planMock7,planMock6,
-												   planMock5,planMock4,planMock3,planMock2,planMock1);
+		List<PlanDeAhorro> planes = Arrays.asList(planMock10,planMock9,planMock8,planMock7,
+				   planMock6,planMock5,planMock4,planMock3,planMock2,planMock1);
 		
+		for(int i = 9, c = 1; i>=0; i--,c++){
+			when(planes.get(i).cantidadDeParticipantes()).thenReturn(c);
+			concesionariaTest.crearPlan(planes.get(i));
+		}
 		assertEquals(concesionariaTest.losDiezPlanesConMasSubscriptos(),planes);
 	}
 	
 	@Test
-	public void testEmitirCupon() {		
+	public void testLosDiezPlanesConMasSubscriptosPocosPlanes() throws SinPlanesExcepcion {
+		when(planMock.cantidadDeParticipantes()).thenReturn(1);
+		concesionariaTest.crearPlan(planMock);
+
+		List<PlanDeAhorro> planes = Arrays.asList(planMock);
+		
+		assertEquals(concesionariaTest.losDiezPlanesConMasSubscriptos(),planes);
+	}
+	
+	@Test(expected = SinPlanesExcepcion.class)
+	public void testLosDiezPlanesConMasSubscriptosSinPlanes() throws SinPlanesExcepcion{
+		concesionariaTest.losDiezPlanesConMasSubscriptos();
+	}
+	
+	@Test
+	public void testEmitirCupon() throws SinStockExcepcion {		
 		concesionariaTest.setFabrica(fabricaMock);
 		concesionariaTest.emitirCupon(cuponMock);
 		
@@ -86,7 +103,7 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testRegistrarPagoDelCupon() {
+	public void testRegistrarPagoDelCupon() throws SinStockExcepcion {
 		concesionariaTest.setFabrica(fabricaMock);
 		concesionariaTest.emitirCupon(cuponMock);
 		concesionariaTest.registrarPagoDelCupon(cuponMock);
@@ -105,15 +122,15 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testStockDisponible(){
+	public void testStockDisponible() throws SinStockExcepcion{
 		concesionariaTest.setFabrica(fabricaMock);
 		when(fabricaMock.stock(modeloMock)).thenReturn(5);
 		assertTrue(concesionariaTest.stock(modeloMock).equals(5));
 	}
 	
-	@Test(expected = ExceptionStock.class)
-	public void testStockNoDisponible(){
-		Mockito.doThrow(new ExceptionStock()).when(plantaMock).stock(modeloMock);
+	@Test(expected = SinStockExcepcion.class)
+	public void testStockNoDisponible() throws SinStockExcepcion{
+		Mockito.doThrow(new SinStockExcepcion()).when(plantaMock).stock(modeloMock);
 		concesionariaTest.stock(modeloMock);
 	}
 	
@@ -129,6 +146,46 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
+	public void testSuscribirClienteAPlan() throws SinPlanesExcepcion {
+		PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock3 = mock(PlanDeAhorro.class);
+			when(planMock3.getNumeroDeGrupo()).thenReturn(5);
+		when(planMock.getNumeroDeGrupo()).thenReturn(5);
+
+		concesionariaTest.crearPlan(planMock2);
+		concesionariaTest.crearPlan(planMock3);
+		Cliente clienteMock = mock(Cliente.class);
+		
+		concesionariaTest.suscribirClienteAPlan(clienteMock,planMock);
+		
+		verify(planMock3).suscribirCliente(clienteMock);
+	}
+	
+	@Test
+	public void testSortearMovil() throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
+		PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
+			when(planMock2.getNumeroDeGrupo()).thenReturn(5);
+		Participante participanteMock = mock(Participante.class);
+		when(planMock2.elegirGanador()).thenReturn(participanteMock);
+		when(planMock2.getModelo()).thenReturn(modeloMock);
+		concesionariaTest.crearPlan(planMock2);
+		
+		when(planMock.getNumeroDeGrupo()).thenReturn(5);
+		when(cuponMock.getModelo()).thenReturn(modeloMock);
+		
+		concesionariaTest.setFabrica(fabricaMock);
+		when(fabricaMock.stock(modeloMock)).thenReturn(5);
+		
+		CuponCreator creadorMock = mock(CuponCreator.class);
+		concesionariaTest.setCreador(creadorMock);
+		when(creadorMock.crearCupon(planMock2,participanteMock)).thenReturn(cuponMock);
+		
+		concesionariaTest.sortearMovil(planMock);
+		
+		verify(creadorMock).crearCupon(planMock2,participanteMock);
+	}
+	
+	@Test
 	public void testGastoAdministrativos() {
 		assertTrue(concesionariaTest.gastoAdministrativos().equals(150.0f));
 	}
@@ -137,15 +194,5 @@ public class ConcesionariaTest {
 	public void testGetFabrica() {
 		concesionariaTest.setFabrica(fabricaMock);
 		assertEquals(concesionariaTest.getFabrica(),fabricaMock);
-	}
-	
-	@Test
-	public void testSuscribirClienteAPlan() {
-		Cliente clienteMock = mock(Cliente.class);
-		PlanDeAhorro planMock = mock(PlanDeAhorro.class);
-		
-		concesionariaTest.suscribirClienteAPlan(clienteMock,planMock);
-		
-		verify(planMock).suscribirCliente(clienteMock);
 	}
 }

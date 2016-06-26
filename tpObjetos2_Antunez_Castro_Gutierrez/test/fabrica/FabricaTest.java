@@ -3,13 +3,14 @@ package fabrica;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import concesionaria.Concesionaria;
-import excepciones.ExceptionStock;
+import excepciones.SinStockExcepcion;
 import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
 import planta.Planta;
@@ -33,9 +34,25 @@ public class FabricaTest {
 		when(plantaMock1.nombreDeLosModelos()).thenReturn(Arrays.asList("Chevrolet Corvette",
 																		"Chevrolet Agile"));
 	}
-	//(expected = ExceptionStock.class)
+	
 	@Test
-	public void testStockDisponible(){
+	public void plantasConModelo() throws SinStockExcepcion{
+		Planta plantaMock2 = mock(Planta.class);
+		when(plantaMock2.nombreDeLosModelos()).thenReturn(new ArrayList<String>());
+
+		fabricaTest.inaugurarPlanta(plantaMock1);
+		fabricaTest.inaugurarPlanta(plantaMock2);
+		
+		assertEquals(fabricaTest.plantasConModelo(modeloMock1),Arrays.asList(plantaMock1));
+	}
+	
+	@Test(expected = SinStockExcepcion.class)
+	public void plantasConModeloNinguna() throws SinStockExcepcion{
+		fabricaTest.plantasConModelo(modeloMock1);
+	}
+	
+	@Test
+	public void testStock() throws SinStockExcepcion{
 		fabricaTest.inaugurarPlanta(plantaMock1);
 		when(plantaMock1.stock(modeloMock1)).thenReturn(2);
 		
@@ -43,7 +60,7 @@ public class FabricaTest {
 	}
 	
 	@Test
-	public void testPlantaMasCercanaAConcesionaria(){
+	public void testPlantaMasCercanaAConcesionaria() throws SinStockExcepcion{
 		Planta plantaMock2 = mock(Planta.class);
 		when(plantaMock2.nombreDeLosModelos()).thenReturn(Arrays.asList("Chevrolet Corvette"));
 
@@ -57,7 +74,7 @@ public class FabricaTest {
 	}
 	
 	@Test
-	public void testQuitarEjemplar(){
+	public void testQuitarEjemplar() throws SinStockExcepcion{
 		when(modeloMock1.getNombre()).thenReturn("Chevrolet Agile");
 
 		fabricaTest.inaugurarPlanta(plantaMock1);
@@ -77,7 +94,7 @@ public class FabricaTest {
 	}
 	
 	@Test
-	public void testCambiarValorMovil(){
+	public void testCambiarValorMovil() throws SinStockExcepcion{
 		fabricaTest.inaugurarPlanta(plantaMock1);
 		
 		RegistroDeModelo registroMock = mock(RegistroDeModelo.class);

@@ -3,7 +3,7 @@ package planta;
 import java.util.ArrayList;
 import java.util.List;
 
-import excepciones.ExceptionStock;
+import excepciones.SinStockExcepcion;
 import inicializadores.RecordsCreator;
 import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
@@ -52,20 +52,20 @@ public class Planta {
 		return registroEncontrado;
 	}
 	
-	public Integer stock(Modelo modelo) throws ExceptionStock{		
+	public Integer stock(Modelo modelo) throws SinStockExcepcion{		
 		if(perteneceModelo(modelo))
 			return buscarRegistroDelModelo(modelo).getCantidad();
 		
-		throw new ExceptionStock();
+		throw new SinStockExcepcion();
 	}
 	
 	private Boolean perteneceModelo(Modelo modelo) {
 		return nombreDeLosModelos().contains(modelo.getNombre());
 	}
 	
-	public void quitarEjemplar(Modelo modelo) throws ExceptionStock{
+	public void quitarEjemplar(Modelo modelo) throws SinStockExcepcion{
 		if(!perteneceModelo(modelo))
-			throw new ExceptionStock();
+			throw new SinStockExcepcion();
 		
 		RegistroDeModelo registro = buscarRegistroDelModelo(modelo);
 		
