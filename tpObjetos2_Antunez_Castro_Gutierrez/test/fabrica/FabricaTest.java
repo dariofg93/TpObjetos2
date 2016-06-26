@@ -33,23 +33,13 @@ public class FabricaTest {
 		when(plantaMock1.nombreDeLosModelos()).thenReturn(Arrays.asList("Chevrolet Corvette",
 																		"Chevrolet Agile"));
 	}
-	
+	//(expected = ExceptionStock.class)
 	@Test
-	public void testStock(){
-		Planta plantaMock2 = mock(Planta.class);
-		when(plantaMock2.nombreDeLosModelos()).thenReturn(Arrays.asList("Chevrolet Agile"));
-
-		fabricaTest.inaugurarPlanta(plantaMock2);
-		Integer total = 0;
+	public void testStockDisponible(){
+		fabricaTest.inaugurarPlanta(plantaMock1);
+		when(plantaMock1.stock(modeloMock1)).thenReturn(2);
 		
-		for(int i = 0; i<3;i+=2){
-			try{
-				total = fabricaTest.stock(modeloMock1);
-			}catch(ExceptionStock arg){}
-			fabricaTest.inaugurarPlanta(plantaMock1);
-			assertTrue(total.equals(i));
-			when(plantaMock1.stock(modeloMock1)).thenReturn(2);
-		}
+		assertTrue(fabricaTest.stock(modeloMock1).equals(2));
 	}
 	
 	@Test

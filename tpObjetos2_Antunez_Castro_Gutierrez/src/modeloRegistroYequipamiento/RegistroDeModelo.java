@@ -40,5 +40,4 @@ public class RegistroDeModelo {
 	public Integer getCantidad() {
 		return cantidad;
 	}
-
 }

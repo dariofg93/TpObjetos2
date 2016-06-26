@@ -23,25 +23,30 @@ public class Fabrica {
 		return plantas;
 	}
 	
-	public Integer stock(Modelo modelo) throws ExceptionStock{
+	public void inaugurarPlanta(Planta unaPlanta){
+		plantas.add(unaPlanta);
+	}
+	
+	public Integer stock(Modelo modelo){
 		Integer total = 0;
 		List<Planta> plantasEncontradas = plantasConModelo(modelo);
 		
-		if(plantasEncontradas.size()==0)
-			throw new ExceptionStock();
 		for(Planta unaPlanta : plantasEncontradas)
 			total += unaPlanta.stock(modelo);
 	
 		return total;
 	}
 	
-	private ArrayList<Planta> plantasConModelo(Modelo modelo){
+	private ArrayList<Planta> plantasConModelo(Modelo modelo) throws ExceptionStock{
 		ArrayList<Planta> plantasEncontradas = new ArrayList<>();
 		
 		for(Planta unaPlanta: getPlantas()){
 			if (unaPlanta.nombreDeLosModelos().contains(modelo.getNombre()))
 				plantasEncontradas.add(unaPlanta);
 		}
+		if(plantasEncontradas.size()==0)
+			throw new ExceptionStock();
+		
 		return plantasEncontradas;
 	}
 
@@ -80,9 +85,5 @@ public class Fabrica {
 	public void cambiarValorTodos(Float porcent){
 		for(Planta p: plantas)
 			p.cambiarValorDeTodos(porcent);
-	}
-	
-	public void inaugurarPlanta(Planta unaPlanta){
-		plantas.add(unaPlanta);
 	}
 }

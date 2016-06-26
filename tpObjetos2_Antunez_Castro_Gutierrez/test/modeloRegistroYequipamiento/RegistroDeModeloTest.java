@@ -24,7 +24,7 @@ public class RegistroDeModeloTest {
 	}
 
 	@Test
-	public void testGetPrecioaaDelModelo(){
+	public void testGetPrecioDelModelo(){
 		when(modeloMock.getValorDeVenta()).thenReturn(80000f);
 		assertTrue(registroTest.getPrecioDelModelo().equals(80000f));
 	}

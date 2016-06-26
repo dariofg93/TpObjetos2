@@ -22,6 +22,14 @@ public class Planta {
 		this.creador = new RecordsCreator();
 	}
 	
+	public void agregarRegistro(RegistroDeModelo unRegistro) {
+		registros.add(unRegistro);
+	}
+
+	public void quitarRegistro(RegistroDeModelo unRegistro) {
+		registros.remove(unRegistro);
+	}
+	
 	// Devuelve el nombre de todos los modelos que produce.
 	public List<String> nombreDeLosModelos() {
 		List<String> todosLosNombres = new ArrayList<String>();
@@ -45,10 +53,10 @@ public class Planta {
 	}
 	
 	public Integer stock(Modelo modelo) throws ExceptionStock{		
-		if(!perteneceModelo(modelo))
-			throw new ExceptionStock();
+		if(perteneceModelo(modelo))
+			return buscarRegistroDelModelo(modelo).getCantidad();
 		
-		return buscarRegistroDelModelo(modelo).getCantidad();
+		throw new ExceptionStock();
 	}
 	
 	private Boolean perteneceModelo(Modelo modelo) {
@@ -83,13 +91,5 @@ public class Planta {
 	public void cambiarValorDeTodos(Float porcent) {
 		for(RegistroDeModelo r: registros)
 			r.cambiarPrecio(porcent);
-	}
-	
-	public void agregarRegistro(RegistroDeModelo unRegistro) {
-		registros.add(unRegistro);
-	}
-
-	public void quitarRegistro(RegistroDeModelo unRegistro) {
-		registros.remove(unRegistro);
 	}
 }
