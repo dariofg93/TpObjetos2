@@ -7,7 +7,6 @@ import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
 import excepciones.ExceptionParticipante;
-import excepciones.ExceptionStock;
 import fabrica.Fabrica;
 import inicializadores.CuponCreator;
 import modeloRegistroYequipamiento.Modelo;
@@ -135,12 +134,7 @@ public class Concesionaria {
 	}
 	
 	public Integer stock(Modelo modelo){
-		try{
-			return miFabrica.stock(modelo);
-		}catch(ExceptionStock arg){
-			System.out.println(arg.getMessage());
-			return 0;
-		}
+		return miFabrica.stock(modelo);
 	}
 
 	public Float montoDelSeguro(Participante p, Modelo modelo) {

@@ -42,7 +42,6 @@ public class SorteoTest {
 	@Test(expected = ExceptionParticipante.class)
 	public void testElegirGanadorSinDisponibles() {
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
-		//Mockito.doThrow(new ExceptionParticipante()).when(planMock).participantesDisponibles();
 		
 		sorteoTest.elegirConcursante(planMock);
 	}

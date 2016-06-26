@@ -8,10 +8,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
+import excepciones.ExceptionStock;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Cliente;
@@ -103,19 +105,16 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testStock() {
-		assertTrue(concesionariaTest.stock(modeloMock).equals(0));
-		
+	public void testStockDisponible(){
 		concesionariaTest.setFabrica(fabricaMock);
-		List<Planta> plantas = Arrays.asList(plantaMock);
-		
-		when(plantaMock.nombreDeLosModelos()).thenReturn(Arrays.asList("Chevrolet Corvette"));
-		when(modeloMock.getNombre()).thenReturn("Chevrolet Corvette");
-		when(fabricaMock.getPlantas()).thenReturn(plantas);
-		
-		assertTrue(concesionariaTest.stock(modeloMock).equals(0));
-		//El stock no cambia porq se simula que hay stock del modelo pedido pero en realidad
-		//nunca se fabrico un nuevo ejemplar del modelo.
+		when(fabricaMock.stock(modeloMock)).thenReturn(5);
+		assertTrue(concesionariaTest.stock(modeloMock).equals(5));
+	}
+	
+	@Test(expected = ExceptionStock.class)
+	public void testStockNoDisponible(){
+		Mockito.doThrow(new ExceptionStock()).when(plantaMock).stock(modeloMock);
+		concesionariaTest.stock(modeloMock);
 	}
 	
 	@Test
