@@ -28,7 +28,7 @@ public class SorteoTest {
 	}
 	
 	@Test
-	public void testElegirGanadorConDisponibles() {
+	public void testElegirGanadorConDisponibles() throws ExceptionParticipante {
 		Participante participanteMock = mock(Participante.class);
 		List<Participante> disponibles = Arrays.asList(participanteMock);
 		
@@ -40,7 +40,7 @@ public class SorteoTest {
 	}
 	
 	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorSinDisponibles() {
+	public void testElegirGanadorSinDisponibles() throws ExceptionParticipante {
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		
 		sorteoTest.elegirConcursante(planMock);

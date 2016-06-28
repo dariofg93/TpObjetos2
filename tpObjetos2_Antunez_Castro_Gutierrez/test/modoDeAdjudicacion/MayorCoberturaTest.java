@@ -26,7 +26,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorUnSoloPagador() {
+	public void testElegirGanadorUnSoloPagador() throws ExceptionParticipante {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -37,7 +37,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorMasDeUnPagadorUnoMasViejo() {
+	public void testElegirGanadorMasDeUnPagadorUnoMasViejo() throws ExceptionParticipante {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -52,7 +52,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorMasDeUnPagadorVariosMasViejos() {
+	public void testElegirGanadorMasDeUnPagadorVariosMasViejos() throws ExceptionParticipante {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -68,7 +68,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorNingunDisponible() {
+	public void testElegirGanadorNingunDisponible() throws ExceptionParticipante {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		

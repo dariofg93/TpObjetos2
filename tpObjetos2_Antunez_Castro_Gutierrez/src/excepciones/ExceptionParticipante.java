@@ -1,6 +1,7 @@
 package excepciones;
 
-public class ExceptionParticipante extends RuntimeException {
+@SuppressWarnings("serial")
+public class ExceptionParticipante extends Exception {
 
 	public ExceptionParticipante(){
 		super("Sin participantes disponibles.");

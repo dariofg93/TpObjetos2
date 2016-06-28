@@ -7,15 +7,10 @@ import planDeAhorro.PlanDeAhorro;
 
 public class ComprobanteDePago {
 	
-	@SuppressWarnings("unused")
 	private Integer cuotaPaga;
-	@SuppressWarnings("unused")
 	private Float gastosAdministrativos;
-	@SuppressWarnings("unused")
 	private Float costoDelSeguro;
-	@SuppressWarnings("unused")
 	private Float alicuota;
-	@SuppressWarnings("unused")
 	private Date fechaPago;
 	
 	public ComprobanteDePago(Integer numeroDeCuota, PlanDeAhorro plan, Participante p){
