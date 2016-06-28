@@ -5,7 +5,9 @@ import java.util.List;
 
 import concesionaria.Concesionaria;
 import excepciones.ExceptionParticipante;
+import excepciones.SinStockExcepcion;
 import financiamiento.Financiamiento;
+import inicializadores.ParticipanteCreator;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
 import persona.Cliente;
@@ -20,6 +22,7 @@ public class PlanDeAhorro {
 	private Integer cantidadDeCuotas;
 	private ModoDeAdjudicacion modoDeAdjudicacion;
 	private Concesionaria concesionaria;
+	private ParticipanteCreator creadorDeParticipante;
 	
 	public PlanDeAhorro(Integer n, Modelo unModelo, Financiamiento unFinanciamiento,
 						Integer cantCuotas, ModoDeAdjudicacion unModo, Concesionaria unaConcesionaria){
@@ -30,59 +33,71 @@ public class PlanDeAhorro {
 		this.cantidadDeCuotas = cantCuotas;
 		this.modoDeAdjudicacion = unModo;
 		this.concesionaria = unaConcesionaria;
+		this.creadorDeParticipante = new ParticipanteCreator();
 	}
-	
+	/** Retorna el numero de grupo que identifica al Plan
+	 * perteneciente a una Concesionaria */
 	public Integer getNumeroDeGrupo() {
 		return numeroDeGrupo;
 	}
 	
+	/** Retorna la Consecionaria al que pertenece este Plan.*/
 	public Concesionaria getConcesionaria() {
 		return concesionaria;
 	}
 	
+	/** Retorna el modo de Financiamiento del Plan. */
+	public Financiamiento getFinanciamiento() {
+		return financiamiento;
+	}
+	
+	/** Retorna el Modelo que se vende mediante este Plan. */
+	public Modelo getModelo() {
+		return this.modeloSuscripto;
+	}
+	
+	/** Retorna los Clientes de la Concesionaria que se inscribieron
+	 * en este Plan, y pasaron a ser Participantes. */
 	public List<Participante> getParticipantes() {
 		return this.suscriptos;
 	}
 	
-	public int cantidadDeParticipantes() {
+	/** Retorna la cantidad de Participantes.*/
+	public Integer cantidadDeParticipantes() {
 		return this.suscriptos.size();
 	}
 
-	/**
-	 * Crea una instancia de participante utilizando el cliente dado por parametro y
-	 * su colaborador interno creado o como se llame... y lo agrega a su lista de participantes
-	 */
+	
+	/** Dado un Cliente, lo inscribe al Plan,
+	 *  y pasaria a ser un Participante de este. */
 	public void suscribirCliente(Cliente c) {
-		// TODO Auto-generated method stub	
-	}
-
-	public Boolean hayParticipantesDisponibles() {
-		return participantesDisponibles().size() > 0;
+		suscriptos.add(creadorDeParticipante.crearParticipante(c));
 	}
 	
-	public Modelo getModelo() {
-		return this.modeloSuscripto;
-	}
 
-	public List<Participante> participantesDisponibles() throws ExceptionParticipante{
+	/** Retorna una lista con los Participantes que esten disponibles
+	 * para el sorteo. */
+	public List<Participante> participantesDisponibles(){
 		ArrayList<Participante> disponibles = new ArrayList<>();
 		
 		for(Participante p: suscriptos)
 			if(p.estaDisponible()) disponibles.add(p);
-		/**												
-		if(disponibles.size()==0)
-			throw new ExceptionParticipante(); */
 		
 		return disponibles;
 	}
 	
-	
+	/** Retorna la cantidad de Participantes que estan disponibles. */
 	public Integer cantidadDeParticipantesDisponibles() {
 		return participantesDisponibles().size();
 	}
 	
+	/** Devuelve True si hay participantes disponibles. */
+	public Boolean hayParticipantesDisponibles() {
+		return cantidadDeParticipantesDisponibles() > 0;
+	}
 	
 	
+	/** Retorna los Participantes que mas cuotas llevan pagando. */
 	public List<Participante> losQueMasPagaron(){
 		List<Participante>  ganadores = new ArrayList<Participante>();
 		
@@ -93,7 +108,9 @@ public class PlanDeAhorro {
 		return ganadores;		
 	}
 
-	private Integer mayorCantidadCuotasPagas() {
+	/** Devuelve la cantidad de cuotas mas grande que algun
+	 * Participante disponible lleva pagando. */
+	public Integer mayorCantidadCuotasPagas() {
 		Integer mayorPagas = 0;
 		
 		for(Participante current : participantesDisponibles()) {
@@ -104,7 +121,7 @@ public class PlanDeAhorro {
 	}
 	
 	
-
+	/** Retorna una lista con los participantes que tengan mayor edad. */
 	public List<Participante> losMasViejos(List<Participante> ganadores){
 		List<Participante> mayores = new ArrayList<Participante>();
 		
@@ -115,7 +132,8 @@ public class PlanDeAhorro {
 		return mayores;
 	}
 
-	private Participante elmasViejo(List<Participante> ganadores) {
+	/** Retorna el participante con mayor edad. */
+	public Participante elmasViejo(List<Participante> ganadores) {
 		Participante mayor = ganadores.get(0);
 		
 		for(Participante current : ganadores) {
@@ -126,7 +144,8 @@ public class PlanDeAhorro {
 	}
 
 	
-	
+	/** Dada una lista de Participantes, retorna el primer Participante
+	 *  que se inscribio a este Plan. */
 	public Participante elPrimerSuscriptor(List<Participante> ganadores){
 		Participante elGanador = ganadores.get(0);
 		
@@ -138,16 +157,21 @@ public class PlanDeAhorro {
 	}
 
 	
-
+	/** Retorna el monto que cada Participante debe pagar en una cuota
+	 * de este Plan. */
 	public Float calcularAlicuota() {
 		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
 	}
 	
+	
+	/** Se realiza un sorteo, y retorna el Participante que haya ganado.
+	 * Observacion: Si el Plan no tiene Participantes disponibles, va a
+	 * devolver un ExceptionParticipante. */
 	public Participante elegirGanador() throws ExceptionParticipante{
 		
 		Participante elGanador;
 		
-		if(participantesDisponibles().size()>0){
+		if(hayParticipantesDisponibles()){
 			elGanador = modoDeAdjudicacion.elegirConcursante(this);
 			elGanador.fuiAdjudicado();
 		}else{
@@ -157,9 +181,31 @@ public class PlanDeAhorro {
 		return elGanador;
 	}
 
-	public Float montoDelFinanciamiento() {
-		return financiamiento.totalAabonar(this);
+	/** Retorna el monto total de las cuotas que deben pagar los Participantes,
+	 * por parte del Modelo. */
+	public Float montoDelFinanciamientoDeCuota() {
+		return financiamiento.totalAabonarDeCuota(this);
 	}
+	
+	/** Retorna el monto total de la adjudicacion que deben pagar los Participantes,
+	 * por parte del Modelo. */
+	public Float montoDelFinanciamientoDeAdjudicacion() {
+		return financiamiento.totalAabonarDeAdjudicacion(this);
+	}
+
+    /** Retorna el monto del flete correspondiente a la distancia entre
+     * la Concesionaria, y la Planta mas cercana que tenga un vehiculo disponible
+	 * del Modelo de este Plan.
+	 *	Observacion: Si dicha Planta no existe, va a lanzar un SinStockExcepcion. 
+     * @throws SinStockExcepcion */
+	public Float montoDelFlete() throws SinStockExcepcion {
+		return this.getConcesionaria().gastoDeFlete(
+				
+				this.getConcesionaria().getFabrica().plantaMasCercanaAConcesionaria(
+						
+						this.getModelo()));
+	}
+	
 
 	
 }

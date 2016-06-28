@@ -9,7 +9,7 @@ import planDeAhorro.PlanDeAhorro;
 public class MayorCobertura implements ModoDeAdjudicacion{
 
 	@Override
-	public Participante elegirConcursante(PlanDeAhorro plan) {
+	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante {
 		
 		Participante retorno;
 		List<Participante> pagadores = plan.losQueMasPagaron();

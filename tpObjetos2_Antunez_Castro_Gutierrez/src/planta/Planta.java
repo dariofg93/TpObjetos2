@@ -8,7 +8,7 @@ import inicializadores.RecordsCreator;
 import modeloRegistroYequipamiento.Modelo;
 import modeloRegistroYequipamiento.RegistroDeModelo;
 
-/** Explicacion de la clase Planta, y su comportamiento. */
+
 
 public class Planta {
 
