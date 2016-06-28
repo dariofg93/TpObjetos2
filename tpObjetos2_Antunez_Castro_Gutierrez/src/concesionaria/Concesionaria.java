@@ -1,7 +1,9 @@
 package concesionaria;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
@@ -91,29 +93,16 @@ public class Concesionaria {
 	}
 	
 	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion{
-		List<PlanDeAhorro> orderedPlans = new ArrayList<PlanDeAhorro>();
-		List<PlanDeAhorro> allPlans = iniciarRecorridoDePlanes();
-		Integer repetitions = 0;
 		
-		while(repetitions<10 && !(allPlans.isEmpty())){
-			PlanDeAhorro nextPlan = planConMasSubscriptos(allPlans);
-			orderedPlans.add(nextPlan);
-			
-			allPlans.remove(nextPlan);
-			repetitions++;
-		}
+		List<PlanDeAhorro> orderedPlans = iniciarRecorridoDePlanes();
+		Comparator<PlanDeAhorro> nDisponibles = (p1, p2) -> 
+	    	p1.cantidadDeParticipantesDisponibles().compareTo(
+	    	p2.cantidadDeParticipantesDisponibles());
+
+	    orderedPlans = orderedPlans.stream()
+	    .sorted(nDisponibles.reversed()).limit(10).collect(Collectors.toList());
+	    
 		return orderedPlans;
-	}
-	
-	//Precondicion: hay por lo menos un plan en la concesionaria.
-	private PlanDeAhorro planConMasSubscriptos(List<PlanDeAhorro> plans){
-		PlanDeAhorro winner = plans.get(0);
-		
-		for(PlanDeAhorro current: plans){
-			if(current.cantidadDeParticipantes() > winner.cantidadDeParticipantes())
-				winner = current;
-		}
-		return winner;
 	}
 	
 	public void sortearMovil(PlanDeAhorro plan) throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
