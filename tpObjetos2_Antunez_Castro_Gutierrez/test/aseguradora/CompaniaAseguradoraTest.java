@@ -21,7 +21,6 @@ public class CompaniaAseguradoraTest {
 		aseguradoraTest = new CompaniaAseguradora();
 	}
 	
-	
 	@Test
 	public void test01MontoDelSeguroConLosDosCasos() {
 		when(mockParticipante.edad()).thenReturn(25);
@@ -30,8 +29,5 @@ public class CompaniaAseguradoraTest {
 		
 		when(mockParticipante.edad()).thenReturn(60);
 		assertTrue(aseguradoraTest.montoDelSeguro(mockParticipante, mockModelo).equals(2150f));
-		
 	}
-
-	
 }
