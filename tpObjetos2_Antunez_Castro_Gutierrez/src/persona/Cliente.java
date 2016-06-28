@@ -1,6 +1,7 @@
 package persona;
 
-import java.util.Date;
+
+import org.joda.time.DateTime;
 
 public class Cliente{
 	
@@ -8,10 +9,10 @@ public class Cliente{
 	protected Integer dni;
 	protected String mail;
 	protected String direccion;
-	protected Date fechaNac;
-	protected Date fechaDeIngreso;
+	protected DateTime fechaNac;
+	protected DateTime fechaDeIngreso;
 	
-	public Cliente(Integer unDni, String nyAp, String mail, String dir, Date nacimiento, Date ingreso){
+	public Cliente(Integer unDni, String nyAp, String mail, String dir, DateTime nacimiento, DateTime ingreso){
 		
 		this.nombreYApellido = nyAp;
 		this.dni = unDni;
@@ -21,11 +22,11 @@ public class Cliente{
 		this.fechaDeIngreso = ingreso;
 	}
 
-	public Date getFecNac() {
+	public DateTime getFecNac() {
 		return this.fechaNac;
 	}
 
-	public Date getFechaDeInscripcion() {
+	public DateTime getFechaDeInscripcion() {
 		return this.fechaDeIngreso;
 	}
 }

@@ -1,8 +1,8 @@
 package persona;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+
+import org.joda.time.DateTime;
 
 import comprobantes.ComprobanteDePago;
 
@@ -10,14 +10,14 @@ public class Participante{
 	
 	private ArrayList<ComprobanteDePago> comprobantes;
 	private Boolean disponible;
-	private Date fechaInscripcion;
+	private DateTime fechaInscripcion;
 	private Cliente cliente;
 	
 	public Participante(Cliente unCliente) {
 		this.comprobantes = new ArrayList<>();
 		this.disponible = true;
 		this.cliente = unCliente;
-		this.fechaInscripcion = new Date();
+		this.fechaInscripcion = new DateTime();
 	}
 
 	/** Retorna la cantidad de cuotas que lleva pagando. */
@@ -41,13 +41,13 @@ public class Participante{
 	}
 	
 	/** Obtiene la fecha de nacimiento. */
-	public Date getFecNac(){
+	public DateTime getFecNac(){
 		//System.out.println(cliente.getFecNac());
 		return cliente.getFecNac();
 	}
 	
 	/** Obtiene la fecha de inscripcion al Plan. */
-	public Date getFechaDeInscripcion(){
+	public DateTime getFechaDeInscripcion(){
 		return fechaInscripcion;
 	}
 	
@@ -57,16 +57,13 @@ public class Participante{
 	}
 
 	/** Devuelve la edad del participante. */
-	public Integer edad()
-	{
-		Calendar fechaNac = Calendar.getInstance();
-		fechaNac.setTime(this.getFecNac());
-		Calendar fechaActual = Calendar.getInstance();
+	public Integer edad(){
+		DateTime fechaActual = new DateTime();
 		
 		// Cálculo de las diferencias.
-	    int anios = fechaActual.get(Calendar.YEAR) - fechaNac.get(Calendar.YEAR);
-	    int meses = fechaActual.get(Calendar.MONTH) - fechaNac.get(Calendar.MONTH);
-	    int dias = fechaActual.get(Calendar.DAY_OF_MONTH) - fechaNac.get(Calendar.DAY_OF_MONTH);
+	    int anios = fechaActual.getYear() - this.getFecNac().getYear();
+	    int meses = fechaActual.getMonthOfYear() - this.getFecNac().getMonthOfYear();
+	    int dias = fechaActual.getDayOfMonth() - this.getFecNac().getDayOfMonth();
 	 
 	    // Hay que comprobar si el día de su cumpleaños es posterior
 	    // a la fecha actual, para restar 1 a la diferencia de años,
@@ -78,10 +75,23 @@ public class Participante{
 	        anios--;
 	    }
 	    
-//	    System.out.println(fechaNac);
-//	    System.out.println(fechaActual);
-	    
-//	    System.out.println(anios);
 	    return anios;
 	}
+	
+	/** Devuelve la cantidad de años que pasaron desde que se inscribio.
+	 *  Observacion: su implementacion es similar al de edad() */
+	public Integer tiempoDesdeInscripcion(){
+		DateTime fechaActual = new DateTime();
+		
+	    int anios = fechaActual.getYear() - this.getFechaDeInscripcion().getYear();
+	    int meses = fechaActual.getMonthOfYear() - this.getFechaDeInscripcion().getMonthOfYear();
+	    int dias = fechaActual.getDayOfMonth() - this.getFechaDeInscripcion().getDayOfMonth();
+	 
+	    if(meses != 0 || (meses == 0 && dias != 0)) { 
+	        //anios--;
+	    }
+	    
+	    return anios;
+	}
+	
 }

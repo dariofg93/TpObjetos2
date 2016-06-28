@@ -2,7 +2,7 @@ package planDeAhorro;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 import concesionaria.Concesionaria;
 import excepciones.ExceptionParticipante;
 import excepciones.SinStockExcepcion;
@@ -25,7 +25,9 @@ public class PlanDeAhorro {
 	private ParticipanteCreator creadorDeParticipante;
 	
 	public PlanDeAhorro(Integer n, Modelo unModelo, Financiamiento unFinanciamiento,
-						Integer cantCuotas, ModoDeAdjudicacion unModo, Concesionaria unaConcesionaria){
+						Integer cantCuotas, ModoDeAdjudicacion unModo,
+						Concesionaria unaConcesionaria){
+		
 		this.numeroDeGrupo = n;
 		this.modeloSuscripto = unModelo;
 		this.suscriptos = new ArrayList<Participante>();
@@ -78,10 +80,10 @@ public class PlanDeAhorro {
 	/** Retorna una lista con los Participantes que esten disponibles
 	 * para el sorteo. */
 	public List<Participante> participantesDisponibles(){
-		ArrayList<Participante> disponibles = new ArrayList<>();
-		
-		for(Participante p: suscriptos)
-			if(p.estaDisponible()) disponibles.add(p);
+		List<Participante> disponibles = this.getParticipantes()
+										 .stream()
+										 .filter(participante -> participante.estaDisponible())
+										 .collect(Collectors.toList());
 		
 		return disponibles;
 	}
@@ -99,12 +101,11 @@ public class PlanDeAhorro {
 	
 	/** Retorna los Participantes que mas cuotas llevan pagando. */
 	public List<Participante> losQueMasPagaron(){
-		List<Participante>  ganadores = new ArrayList<Participante>();
-		
-		for(Participante participantes: participantesDisponibles()){
-			if(participantes.cuotasPagas()==mayorCantidadCuotasPagas())
-				ganadores.add(participantes);
-		}
+		List<Participante>  ganadores = this.participantesDisponibles()
+										.stream()
+										.filter(participante -> participante.cuotasPagas() == mayorCantidadCuotasPagas())
+										.collect(Collectors.toList());
+		//System.out.println(ganadores);
 		return ganadores;		
 	}
 
@@ -112,34 +113,31 @@ public class PlanDeAhorro {
 	 * Participante disponible lleva pagando. */
 	public Integer mayorCantidadCuotasPagas() {
 		Integer mayorPagas = 0;
-		
-		for(Participante current : participantesDisponibles()) {
-			if(current.cuotasPagas()>mayorPagas)
-				mayorPagas = current.cuotasPagas();
-		}
+		Participante participanteConMasCuotasPagas = this.participantesDisponibles()
+												     .stream()
+												     .max((Participante p1, Participante p2)->p1.cuotasPagas().compareTo(p2.cuotasPagas()))
+												     .get();
+		mayorPagas = participanteConMasCuotasPagas.cuotasPagas();
 		return mayorPagas;
 	}
-	
+
 	
 	/** Retorna una lista con los participantes que tengan mayor edad. */
 	public List<Participante> losMasViejos(List<Participante> ganadores){
-		List<Participante> mayores = new ArrayList<Participante>();
-		
-		for(Participante current : ganadores){
-			if(current.getFecNac().equals(elmasViejo(ganadores)))
-				mayores.add(current);
-		}
+		List<Participante> mayores = ganadores
+									 .stream()
+									 .filter(participante -> participante.edad().equals(elMasViejo(ganadores).edad()))
+									 .collect(Collectors.toList());
 		return mayores;
 	}
 
 	/** Retorna el participante con mayor edad. */
-	public Participante elmasViejo(List<Participante> ganadores) {
-		Participante mayor = ganadores.get(0);
+	public Participante elMasViejo(List<Participante> ganadores) {
 		
-		for(Participante current : ganadores) {
-			if(current.getFecNac().before(mayor.getFecNac()))
-				mayor = current;
-		}
+		Participante mayor = ganadores
+							 .stream()
+							 .max((Participante p1, Participante p2)->p1.edad().compareTo(p2.edad()))
+							 .get();
 		return mayor;
 	}
 
@@ -147,12 +145,10 @@ public class PlanDeAhorro {
 	/** Dada una lista de Participantes, retorna el primer Participante
 	 *  que se inscribio a este Plan. */
 	public Participante elPrimerSuscriptor(List<Participante> ganadores){
-		Participante elGanador = ganadores.get(0);
-		
-		for(Participante current : ganadores) {
-			if(current.getFechaDeInscripcion().before(elGanador.getFecNac()))
-				elGanador = current;
-		}
+		Participante elGanador = ganadores
+								 .stream()
+								 .max((Participante p1, Participante p2)->p1.tiempoDesdeInscripcion().compareTo(p2.tiempoDesdeInscripcion()))
+								 .get();
 		return elGanador;
 	}
 
@@ -160,7 +156,12 @@ public class PlanDeAhorro {
 	/** Retorna el monto que cada Participante debe pagar en una cuota
 	 * de este Plan. */
 	public Float calcularAlicuota() {
-		return financiamiento.totalAabonar(this) / cantidadDeCuotas;
+		return financiamiento.totalAabonarDeCuota(this) / cantidadDeCuotas;
+	}
+	
+	/** Cambia el modo de Financiamiento. */
+	public void setFinanciamiento(Financiamiento unFinanciamiento){
+		this.financiamiento = unFinanciamiento;
 	}
 	
 	

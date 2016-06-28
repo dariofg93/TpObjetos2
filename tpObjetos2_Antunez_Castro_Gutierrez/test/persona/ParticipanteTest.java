@@ -3,8 +3,7 @@ package persona;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.util.Date;
-
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,13 +13,14 @@ public class ParticipanteTest {
 
 	Participante participanteTest;
 	Cliente clienteMock;
-	Date fechaNac;
+	DateTime fechaNac;
 	ComprobanteDePago comprobanteMock;
 	
 	@Before
 	public void setUp(){
 		clienteMock = mock(Cliente.class);
-		fechaNac = new Date(1/11/1994);
+		fechaNac = new DateTime(1994,9,25,00,00,00);
+		
 		when(clienteMock.getFecNac()).thenReturn(fechaNac);
 		participanteTest = new Participante(clienteMock);
 		comprobanteMock = mock(ComprobanteDePago.class);
@@ -62,7 +62,7 @@ public class ParticipanteTest {
 	
 	@Test
 	public void testGetFechaDeInscripcion() {
-		assertTrue(participanteTest.getFechaDeInscripcion().equals(new Date()));
+		assertTrue(participanteTest.getFechaDeInscripcion().equals(new DateTime()));
 	}
 	
 	
@@ -78,14 +78,12 @@ public class ParticipanteTest {
 		assertTrue(participanteTest.cuotasPagas().equals(1));
 	}
 	
-	/**
+	
 	@Test
 	public void testEdad() {
-		fechaNac = new Date(9/25/1994);
-		when(clienteMock.getFecNac()).thenReturn(fechaNac);
 		assertTrue(participanteTest.edad().equals(21));
 		
-	}*/
+	}
 	
 	
 }
