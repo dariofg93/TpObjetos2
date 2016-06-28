@@ -94,14 +94,16 @@ public class Concesionaria {
 	
 	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion{
 		
-		List<PlanDeAhorro> orderedPlans = iniciarRecorridoDePlanes();
 		Comparator<PlanDeAhorro> nDisponibles = (p1, p2) -> 
 	    	p1.cantidadDeParticipantesDisponibles().compareTo(
 	    	p2.cantidadDeParticipantesDisponibles());
 
-	    orderedPlans = orderedPlans.stream()
-	    .sorted(nDisponibles.reversed()).limit(10).collect(Collectors.toList());
-	    
+	    List<PlanDeAhorro> orderedPlans = iniciarRecorridoDePlanes()
+	    	.stream()
+	    	.sorted(nDisponibles.reversed())
+	    	.limit(10)
+	    	.collect(Collectors.toList());
+	   
 		return orderedPlans;
 	}
 	
@@ -137,12 +139,13 @@ public class Concesionaria {
 	}
 	
 	private PlanDeAhorro buscarPlan(PlanDeAhorro p) throws SinPlanesExcepcion {
-		PlanDeAhorro planFound = null;
-		for(PlanDeAhorro plan: iniciarRecorridoDePlanes()){
-			if(plan.getNumeroDeGrupo().equals(p.getNumeroDeGrupo()))
-				planFound = plan;
-		}
-		return planFound;
+		
+		List<PlanDeAhorro> planFound = iniciarRecorridoDePlanes()
+			.stream()
+			.filter(p1 -> p1.getNumeroDeGrupo().equals(p.getNumeroDeGrupo()))
+			.collect(Collectors.toList());
+		
+		return planFound.get(0);
 	}
 
 	private List<PlanDeAhorro> iniciarRecorridoDePlanes() throws SinPlanesExcepcion{
