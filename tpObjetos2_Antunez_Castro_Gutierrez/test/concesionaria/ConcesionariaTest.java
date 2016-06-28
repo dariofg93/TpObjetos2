@@ -63,37 +63,23 @@ public class ConcesionariaTest {
 	
 	@Test
 	public void testLosDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion {
-		PlanDeAhorro planMock1 = mock(PlanDeAhorro.class); PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
-		PlanDeAhorro planMock3 = mock(PlanDeAhorro.class); PlanDeAhorro planMock4 = mock(PlanDeAhorro.class);
-		PlanDeAhorro planMock5 = mock(PlanDeAhorro.class); PlanDeAhorro planMock6 = mock(PlanDeAhorro.class);
-		PlanDeAhorro planMock7 = mock(PlanDeAhorro.class); PlanDeAhorro planMock8 = mock(PlanDeAhorro.class);
-		PlanDeAhorro planMock9 = mock(PlanDeAhorro.class); PlanDeAhorro planMock10 = mock(PlanDeAhorro.class);
+		PlanDeAhorro planMock1 = mock(PlanDeAhorro.class);
+			when(planMock1.cantidadDeParticipantesDisponibles()).thenReturn(1);
+			concesionariaTest.crearPlan(planMock1);
+		PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
+			when(planMock2.cantidadDeParticipantesDisponibles()).thenReturn(2);
+			concesionariaTest.crearPlan(planMock2);
 		
-		List<PlanDeAhorro> planes = Arrays.asList(planMock10,planMock9,planMock8,planMock7,
-				   planMock6,planMock5,planMock4,planMock3,planMock2,planMock1);
-		
-		for(int i = 9, c = 1; i>=0; i--,c++){
-			when(planes.get(i).cantidadDeParticipantes()).thenReturn(c);
-			concesionariaTest.crearPlan(planes.get(i));
-		}
+		List<PlanDeAhorro> planes = Arrays.asList(planMock2,planMock1);
+			
 		assertEquals(concesionariaTest.losDiezPlanesConMasSubscriptos(),planes);
 	}
-	
-	@Test
-	public void testLosDiezPlanesConMasSubscriptosPocosPlanes() throws SinPlanesExcepcion {
-		when(planMock.cantidadDeParticipantes()).thenReturn(1);
-		concesionariaTest.crearPlan(planMock);
 
-		List<PlanDeAhorro> planes = Arrays.asList(planMock);
-		
-		assertEquals(concesionariaTest.losDiezPlanesConMasSubscriptos(),planes);
-	}
-	
 	@Test(expected = SinPlanesExcepcion.class)
-	public void testLosDiezPlanesConMasSubscriptosSinPlanes() throws SinPlanesExcepcion{
+	public void testLosDiezPlanesConMasSubscriptosSinPlanes() throws SinPlanesExcepcion {			
 		concesionariaTest.losDiezPlanesConMasSubscriptos();
 	}
-	
+
 	@Test
 	public void testEmitirCupon() throws SinStockExcepcion {		
 		concesionariaTest.setFabrica(fabricaMock);

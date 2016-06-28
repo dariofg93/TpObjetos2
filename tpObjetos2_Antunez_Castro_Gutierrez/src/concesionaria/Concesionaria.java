@@ -1,7 +1,9 @@
 package concesionaria;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
@@ -91,29 +93,18 @@ public class Concesionaria {
 	}
 	
 	public List<PlanDeAhorro> losDiezPlanesConMasSubscriptos() throws SinPlanesExcepcion{
-		List<PlanDeAhorro> orderedPlans = new ArrayList<PlanDeAhorro>();
-		List<PlanDeAhorro> allPlans = iniciarRecorridoDePlanes();
-		Integer repetitions = 0;
 		
-		while(repetitions<10 && !(allPlans.isEmpty())){
-			PlanDeAhorro nextPlan = planConMasSubscriptos(allPlans);
-			orderedPlans.add(nextPlan);
-			
-			allPlans.remove(nextPlan);
-			repetitions++;
-		}
+		Comparator<PlanDeAhorro> nDisponibles = (p1, p2) -> 
+	    	p1.cantidadDeParticipantesDisponibles().compareTo(
+	    	p2.cantidadDeParticipantesDisponibles());
+
+	    List<PlanDeAhorro> orderedPlans = iniciarRecorridoDePlanes()
+	    	.stream()
+	    	.sorted(nDisponibles.reversed())
+	    	.limit(10)
+	    	.collect(Collectors.toList());
+	   
 		return orderedPlans;
-	}
-	
-	//Precondicion: hay por lo menos un plan en la concesionaria.
-	private PlanDeAhorro planConMasSubscriptos(List<PlanDeAhorro> plans){
-		PlanDeAhorro winner = plans.get(0);
-		
-		for(PlanDeAhorro current: plans){
-			if(current.cantidadDeParticipantes() > winner.cantidadDeParticipantes())
-				winner = current;
-		}
-		return winner;
 	}
 	
 	public void sortearMovil(PlanDeAhorro plan) throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
@@ -148,12 +139,13 @@ public class Concesionaria {
 	}
 	
 	private PlanDeAhorro buscarPlan(PlanDeAhorro p) throws SinPlanesExcepcion {
-		PlanDeAhorro planFound = null;
-		for(PlanDeAhorro plan: iniciarRecorridoDePlanes()){
-			if(plan.getNumeroDeGrupo().equals(p.getNumeroDeGrupo()))
-				planFound = plan;
-		}
-		return planFound;
+		
+		List<PlanDeAhorro> planFound = iniciarRecorridoDePlanes()
+			.stream()
+			.filter(p1 -> p1.getNumeroDeGrupo().equals(p.getNumeroDeGrupo()))
+			.collect(Collectors.toList());
+		
+		return planFound.get(0);
 	}
 
 	private List<PlanDeAhorro> iniciarRecorridoDePlanes() throws SinPlanesExcepcion{
