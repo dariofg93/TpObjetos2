@@ -73,7 +73,7 @@ public class PlanDeAhorro {
 	/** Dado un Cliente, lo inscribe al Plan,
 	 *  y pasaria a ser un Participante de este. */
 	public void suscribirCliente(Cliente c) {
-		suscriptos.add(creadorDeParticipante.crearParticipante(c));
+		suscriptos.add(creadorDeParticipante.crearParticipante(c,this));
 	}
 	
 
@@ -194,20 +194,10 @@ public class PlanDeAhorro {
 	public Float montoDelFinanciamientoDeAdjudicacion() {
 		return financiamiento.totalAabonarDeAdjudicacion(this);
 	}
-
-    /** Retorna el monto del flete correspondiente a la distancia entre
-     * la Concesionaria, y la Planta mas cercana que tenga un vehiculo disponible
-	 * del Modelo de este Plan.
-	 *	Observacion: Si dicha Planta no existe, va a lanzar un SinStockExcepcion. 
-     * @throws SinStockExcepcion */
-	public Float montoDelFlete() throws SinStockExcepcion {
-		return this.getConcesionaria().gastoDeFlete(
-				
-				this.getConcesionaria().getFabrica().plantaMasCercanaAConcesionaria(
-						
-						this.getModelo()));
+	public Integer getCuotas() {
+		return cantidadDeCuotas;
 	}
-	
-
-	
+	public void dessuscribirParticipante(Participante p){
+		suscriptos.remove(p);
+	}
 }

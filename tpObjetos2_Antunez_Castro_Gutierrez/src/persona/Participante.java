@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import org.joda.time.DateTime;
 
 import comprobantes.ComprobanteDePago;
+import excepciones.SinStockExcepcion;
+import inicializadores.ComprobanteCreator;
+import inicializadores.CuponCreator;
+import planDeAhorro.PlanDeAhorro;
 
 public class Participante{
 	
@@ -12,12 +16,18 @@ public class Participante{
 	private Boolean disponible;
 	private DateTime fechaInscripcion;
 	private Cliente cliente;
+	private PlanDeAhorro plan;
+	private ComprobanteCreator creadorComprobante;
+	private CuponCreator creadorCupon;
 	
-	public Participante(Cliente unCliente) {
+	public Participante(Cliente unCliente,PlanDeAhorro unPlan) {
 		this.comprobantes = new ArrayList<>();
 		this.disponible = true;
 		this.cliente = unCliente;
 		this.fechaInscripcion = new DateTime();
+		this.plan = unPlan;
+		this.creadorComprobante = new ComprobanteCreator();
+		this.creadorCupon = new CuponCreator();
 	}
 
 	/** Retorna la cantidad de cuotas que lleva pagando. */
@@ -51,9 +61,17 @@ public class Participante{
 		return fechaInscripcion;
 	}
 	
-	/** Paga una cuota del Plan. */
-	public void agregarCuota(ComprobanteDePago comp){
-		comprobantes.add(comp);
+	/** Paga una cuota del Plan. 
+	 * @throws SinStockExcepcion */
+	public void pagarCuota() throws SinStockExcepcion{
+		Integer cuotaPaga = cuotasPagas()+1;
+		
+		if(cuotaPaga==plan.getCuotas()){
+			plan.getConcesionaria().emitirCupon(creadorCupon.crearCupon(plan, this));
+			plan.dessuscribirParticipante(this);
+		}else{
+			comprobantes.add(creadorComprobante.crearComprobante(cuotaPaga,plan,this));
+		}	
 	}
 
 	/** Devuelve la edad del participante. */
