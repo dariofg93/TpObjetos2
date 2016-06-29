@@ -159,7 +159,8 @@ public class PlanDeAhorro {
 		return financiamiento.totalAabonarDeCuota(this) / cantidadDeCuotas;
 	}
 	
-	/** Cambia el modo de Financiamiento. */
+	/** Cambia el modo de Financiamiento.
+	 *  Observacion: Usado para los test, y comprobar los distintos comportamientos.  */
 	public void setFinanciamiento(Financiamiento unFinanciamiento){
 		this.financiamiento = unFinanciamiento;
 	}
