@@ -69,10 +69,9 @@ public class Participante{
 	    // a la fecha actual, para restar 1 a la diferencia de años,
 	    // porque en ese caso, aun no es su cumpleaños.
 	 
-	    if(meses != 0 // Todavia no es el mes de su cumpleaños
-	       || (meses == 0 && dias != 0)) { // o es el mes pero no llego el día.
-	 
-	        anios--;
+	 // Todavia no es el mes de su cumpleaños o es el mes pero no llego el día.
+	    if	(meses != 0 || (meses == 0 && dias != 0)) { 
+	       anios--;
 	    }
 	    
 	    return anios;

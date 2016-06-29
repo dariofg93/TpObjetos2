@@ -10,14 +10,11 @@ public class Plan70y30 extends Financiamiento{
 		return porcentajeDelModelo(plan.getModelo(), 70);
 	}
 
+	
 	private Float porcentajeDelModelo(Modelo modelo, int porcent) {
 		return (modelo.getValorDeVenta() * porcent) / 100;
 	}
 
-	@Override
-	public Float totalAabonar(PlanDeAhorro plan) {
-		return porcentajeDelModelo(plan.getModelo(), 100);
-	}
 
 	@Override
 	public Float totalAabonarDeAdjudicacion(PlanDeAhorro plan) {

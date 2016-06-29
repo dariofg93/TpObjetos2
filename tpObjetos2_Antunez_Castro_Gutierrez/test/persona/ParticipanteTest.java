@@ -86,4 +86,9 @@ public class ParticipanteTest {
 	}
 	
 	
+	@Test
+	public void testTiempoDesdeInscripcion() {
+		assertTrue(participanteTest.tiempoDesdeInscripcion().equals(0));
+		
+	}
 }
