@@ -6,7 +6,6 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.xml.sax.DocumentHandler;
 
 import concesionaria.Concesionaria;
 import excepciones.SinStockExcepcion;

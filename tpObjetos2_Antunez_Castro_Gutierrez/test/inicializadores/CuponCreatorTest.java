@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import concesionaria.Concesionaria;
-import cupon.CuponDeAdjudicacion;
 import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
 import modeloRegistroYequipamiento.Modelo;

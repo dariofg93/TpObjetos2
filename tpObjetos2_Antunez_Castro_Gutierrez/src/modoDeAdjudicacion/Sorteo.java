@@ -13,6 +13,11 @@ public class Sorteo implements ModoDeAdjudicacion{
 		this.rnd = unRandom;
 	}
 	
+	/**
+	 * Prop: Dado un plan de ahorro, devuelve uno de sus participantes disponibles,
+	 * 		 el cual sera el ganador de una adjudicacion.
+	 * Prec: Debe haber almenos 1 participante disponible en el plan de ahorro dado.
+	 */
 	@Override
 	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante{
 		if(plan.hayParticipantesDisponibles()){

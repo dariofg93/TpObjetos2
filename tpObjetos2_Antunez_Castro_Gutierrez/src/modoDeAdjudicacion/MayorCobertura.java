@@ -8,13 +8,20 @@ import planDeAhorro.PlanDeAhorro;
 
 public class MayorCobertura implements ModoDeAdjudicacion{
 
+	/**
+	 * Prop: Dado un plan de ahorro, devuelve uno de sus participantes disponibles,
+	 * 		 el cual sera el ganador de una adjudicacion.
+	 * Prec: Debe haber almenos 1 participante disponible en el plan de ahorro dado.
+	 */
 	@Override
 	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante {
 		
 		Participante retorno;
-		List<Participante> pagadores = plan.losQueMasPagaron();
 		
 		if (plan.hayParticipantesDisponibles()){
+			
+			List<Participante> pagadores = plan.losQueMasPagaron();
+			
 			if(pagadores.size()==1){
 				retorno = pagadores.get(0);
 			}

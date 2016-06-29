@@ -42,10 +42,9 @@ public class PlantaTest {
 		RegistroDeModelo registroMock2 = mock(RegistroDeModelo.class);
 		when(registroMock2.getNombreDelModelo()).thenReturn("Chevrolet Agile");
 
-		plantaTest.agregarRegistro(registroMock2);
-		assertFalse(plantaTest.buscarRegistroDelModelo(modeloMock1).equals(registroMock1));
-		
+		plantaTest.agregarRegistro(registroMock2);		
 		plantaTest.agregarRegistro(registroMock1);
+		
 		assertEquals(plantaTest.buscarRegistroDelModelo(modeloMock1),registroMock1);
 	}
 	

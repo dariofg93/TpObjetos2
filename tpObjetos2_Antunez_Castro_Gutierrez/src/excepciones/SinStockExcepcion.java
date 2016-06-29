@@ -1,7 +1,7 @@
 package excepciones;
 
 @SuppressWarnings("serial")
-public class SinStockExcepcion extends Exception{
+public class SinStockExcepcion extends RuntimeException{
 
 	public SinStockExcepcion(){
 		this("Sin stock");

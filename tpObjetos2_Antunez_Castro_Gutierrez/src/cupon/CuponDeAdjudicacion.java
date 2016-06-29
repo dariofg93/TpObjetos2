@@ -11,8 +11,10 @@ import planta.Planta;
 
 public class CuponDeAdjudicacion {
 
+	@SuppressWarnings("unused")
 	private Float montoTotal;
 	private Modelo modelo;
+	@SuppressWarnings("unused")
 	private Cliente cliente;
 	
 	

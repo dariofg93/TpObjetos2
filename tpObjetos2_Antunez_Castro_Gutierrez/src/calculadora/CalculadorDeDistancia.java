@@ -14,10 +14,9 @@ public class CalculadorDeDistancia {
 	}
 	
 	/**
-	 * Prop: Devuelve un numero entre 1 500 que simula ser la distancia desde la
+	 * Prop: Devuelve un numero entre 1 y 500 que simula ser la distancia desde la
 	 * 		 concesionaria hasta la planta dada por parametro.
-	 * Obs: La distancia en kilometros que hay 
-	 *  	entre la concesionaria y una planta es 0 < x <= 500
+	 * Obs: La distancia desde una planta a la concesionaria se mide en kilometros 
 	 */
 	public Integer calcularDistancia(Planta unaPlanta){
 		
