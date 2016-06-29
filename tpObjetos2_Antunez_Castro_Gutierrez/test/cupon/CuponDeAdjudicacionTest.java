@@ -5,10 +5,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.xml.sax.DocumentHandler;
 
+import concesionaria.Concesionaria;
 import excepciones.SinStockExcepcion;
+import fabrica.Fabrica;
 import financiamiento.Financiamiento;
-import financiamiento.Plan100;
 import modeloRegistroYequipamiento.Modelo;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
@@ -16,6 +19,8 @@ import planta.Planta;
 
 public class CuponDeAdjudicacionTest {
 
+	Concesionaria concesionariaMock;
+	Fabrica fabricaMock;
 	CuponDeAdjudicacion cuponTest;
 	PlanDeAhorro planMock;
 	Participante participanteMock;
@@ -25,6 +30,8 @@ public class CuponDeAdjudicacionTest {
 	
 	@Before
 	public void setUp() throws SinStockExcepcion{
+		fabricaMock = mock(Fabrica.class);
+		concesionariaMock = mock(Concesionaria.class);
 		participanteMock = mock(Participante.class);
 		modeloMock = mock(Modelo.class);
 		when(modeloMock.getValorDeVenta()).thenReturn(1000f);
@@ -32,34 +39,30 @@ public class CuponDeAdjudicacionTest {
 		
 		planMock = mock(PlanDeAhorro.class);
 		when(planMock.getModelo()).thenReturn(modeloMock);
-		
-		
-		cuponTest = new CuponDeAdjudicacion(planMock,participanteMock);
-	}
-
-	@Test
-	public void testGetModelo() {
-		assertTrue(cuponTest.getModelo().equals(modeloMock));
-	}
-	/**
-	@Test
-	public void testMontoDelFinanciamiento70Y30() {
-		financiamientoMock = new Plan70y30();
-		when(planMock.getFinanciamiento()).thenReturn(financiamientoMock);
-		assertTrue(cuponTest.montoDelFinanciamiento(planMock).equals(300f));
-	}*/
-	
-	@Test
-	public void testMontoDelFinanciamiento100() {
-		financiamientoMock = new Plan100();
-		when(planMock.getFinanciamiento()).thenReturn(financiamientoMock);
-		assertTrue(cuponTest.montoDelFinanciamiento(planMock).equals(0f));
 	}
 	
 	@Test
-	public void testMontoDelFlete() throws SinStockExcepcion {
-		when(planMock.montoDelFlete()).thenReturn(250f);
-		assertTrue(cuponTest.montoDelFlete(planMock).equals(250f));
+	public void testCrearCupon() throws SinStockExcepcion{
+		when(planMock.montoDelFinanciamientoDeAdjudicacion()).thenReturn(0f);
+		when(planMock.getConcesionaria()).thenReturn(concesionariaMock);
+		when(planMock.getModelo()).thenReturn(modeloMock);
+		
+		when(concesionariaMock.getFabrica()).thenReturn(fabricaMock);
+		when(concesionariaMock.gastoDeFlete(plantaMock)).thenReturn(100f);
+		
+		when(fabricaMock.plantaMasCercanaAConcesionaria(modeloMock)).thenReturn(plantaMock);
+		
+		 CuponDeAdjudicacion cupon = new CuponDeAdjudicacion(planMock,participanteMock);
+		 assertEquals(cupon.getModelo(),modeloMock);
 	}
-
+	
+	@Test(expected = SinStockExcepcion.class)
+	public void testCrearCuponSinStock() throws SinStockExcepcion{
+		when(planMock.getConcesionaria()).thenReturn(concesionariaMock);
+		when(planMock.getModelo()).thenReturn(modeloMock);
+		when(concesionariaMock.getFabrica()).thenReturn(fabricaMock);
+		
+		Mockito.doThrow(new SinStockExcepcion()).when(fabricaMock).plantaMasCercanaAConcesionaria(modeloMock);		
+		new CuponDeAdjudicacion(planMock,participanteMock);
+	}
 }

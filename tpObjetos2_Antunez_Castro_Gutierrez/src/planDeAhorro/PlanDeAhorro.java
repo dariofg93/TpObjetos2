@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import concesionaria.Concesionaria;
 import excepciones.ExceptionParticipante;
-import excepciones.SinStockExcepcion;
 import financiamiento.Financiamiento;
 import inicializadores.ParticipanteCreator;
 import modeloRegistroYequipamiento.Modelo;
@@ -199,5 +198,9 @@ public class PlanDeAhorro {
 	}
 	public void dessuscribirParticipante(Participante p){
 		suscriptos.remove(p);
+	}
+	
+	public void setCreadorDeParticipante(ParticipanteCreator creador){
+		creadorDeParticipante = creador;
 	}
 }

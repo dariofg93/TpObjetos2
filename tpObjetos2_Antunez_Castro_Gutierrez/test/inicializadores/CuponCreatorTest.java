@@ -1,13 +1,18 @@
 package inicializadores;
 
-
 import static org.mockito.Mockito.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import concesionaria.Concesionaria;
+import cupon.CuponDeAdjudicacion;
 import excepciones.SinStockExcepcion;
+import fabrica.Fabrica;
+import modeloRegistroYequipamiento.Modelo;
+import persona.Cliente;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
+import planta.Planta;
 
 /** Test que prueba que el creador de Cupones de Adjudicacion se comporta segun lo esperado. */
 public class CuponCreatorTest {
@@ -26,18 +31,21 @@ public class CuponCreatorTest {
 	/** Se realiza la creacion de un Cupon. */
 	@Test
 	public void testCrearCupon() throws SinStockExcepcion {
-		cuponCreatorTest.crearCupon(planMock, winnerMock);
-	}
-
-	
-	/** Se intenta realizar la creacion de un Cupon,
-	 * pero el Plan no obtiene el monto del flete
-	 * (no hay una Planta que tenga Stock de ese Modelo).
-	 * En consecuencia, se espera que tire una excepcion.  */
-	@Test(expected = SinStockExcepcion.class)
-	public void testCrearCuponSinStock() throws SinStockExcepcion {
-		doThrow(new SinStockExcepcion()).when(planMock).montoDelFlete();
-		cuponCreatorTest.crearCupon(planMock, winnerMock);
+		Modelo modeloMock = mock(Modelo.class);
+		Cliente clienteMock = mock(Cliente.class);
+		Concesionaria concesionariaMock = mock(Concesionaria.class);
+		Fabrica fabricaMock = mock(Fabrica.class);
+		Planta plantaMock = mock(Planta.class);
 		
+		when(planMock.getModelo()).thenReturn(modeloMock);
+		when(winnerMock.getCliente()).thenReturn(clienteMock);
+		when(planMock.montoDelFinanciamientoDeAdjudicacion()).thenReturn(0f);
+		when(planMock.getConcesionaria()).thenReturn(concesionariaMock);
+		when(concesionariaMock.getFabrica()).thenReturn(fabricaMock);
+		when(planMock.getModelo()).thenReturn(modeloMock);
+		when(fabricaMock.plantaMasCercanaAConcesionaria(modeloMock)).thenReturn(plantaMock);
+		when(concesionariaMock.gastoDeFlete(plantaMock)).thenReturn(50f);
+		
+		cuponCreatorTest.crearCupon(planMock, winnerMock);
 	}
 }

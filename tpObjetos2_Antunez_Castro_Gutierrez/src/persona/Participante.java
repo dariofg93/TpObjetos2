@@ -110,5 +110,9 @@ public class Participante{
 	    
 	    return anios;
 	}
+
+	public void setCreadorCupon(CuponCreator unCreador) {
+		creadorCupon = unCreador;
+	}
 	
 }

@@ -8,6 +8,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import comprobantes.ComprobanteDePago;
+import concesionaria.Concesionaria;
+import cupon.CuponDeAdjudicacion;
+import excepciones.SinStockExcepcion;
+import inicializadores.CuponCreator;
+import modeloRegistroYequipamiento.Modelo;
+import planDeAhorro.PlanDeAhorro;
 
 public class ParticipanteTest {
 
@@ -15,14 +21,16 @@ public class ParticipanteTest {
 	Cliente clienteMock;
 	DateTime fechaNac;
 	ComprobanteDePago comprobanteMock;
+	PlanDeAhorro planMock;
 	
 	@Before
 	public void setUp(){
 		clienteMock = mock(Cliente.class);
+		planMock = mock(PlanDeAhorro.class);
 		fechaNac = new DateTime(1994,9,25,00,00,00);
 		
 		when(clienteMock.getFecNac()).thenReturn(fechaNac);
-		participanteTest = new Participante(clienteMock);
+		participanteTest = new Participante(clienteMock,planMock);
 		comprobanteMock = mock(ComprobanteDePago.class);
 	}
 	
@@ -59,32 +67,37 @@ public class ParticipanteTest {
 		assertTrue(participanteTest.getFecNac().equals(fechaNac));
 	}
 	
-	/**	Prueba que la fecha de inscripcion del Participante
-	 *  es de cuando este es creado. 
-	 * Observacion:
-	 *  Al momento de crear un Participante, su fecha de inscripcion se genera
-	 *  en el mismo instante en el que es creado. Entonces, puede que al momento
-	 *  de compilar los test, este test genere un AssertionError a causa de que el instante
-	 *  de la fecha de inscripcion es diferente al de compilacion del test.
-	 *  Si falla, se puede correr otra vez el test y va a funcionar. */
-	@Test
-	public void testGetFechaDeInscripcion() {
-		assertTrue(participanteTest.getFechaDeInscripcion().equals(new DateTime()));
-	}
-	
-	
 	@Test
 	public void testCuotasPagas(){
 		assertTrue(participanteTest.cuotasPagas().equals(0));
 	}
 	
-	
 	@Test
-	public void testAgregarCuota() {
-		participanteTest.agregarCuota(comprobanteMock);
-		assertTrue(participanteTest.cuotasPagas().equals(1));
+	public void testPagarCuotaUltimaCuota() throws SinStockExcepcion {
+		CuponCreator creadorCuponMock = mock(CuponCreator.class);
+		Concesionaria concesionariaMock = mock(Concesionaria.class);
+		Modelo modeloMock = mock(Modelo.class);
+		CuponDeAdjudicacion cuponMock = mock(CuponDeAdjudicacion.class);
+		
+		when(planMock.getConcesionaria()).thenReturn(concesionariaMock);
+		when(planMock.getModelo()).thenReturn(modeloMock);
+		when(concesionariaMock.gastoAdministrativos()).thenReturn(50f);
+		when(concesionariaMock.montoDelSeguro(participanteTest,modeloMock)).thenReturn(100f);
+		when(planMock.getConcesionaria()).thenReturn(concesionariaMock);
+		when(planMock.calcularAlicuota()).thenReturn(150f);
+		
+		when(planMock.getCuotas()).thenReturn(20);
+		for(int i = 0; i<19;i++)
+			participanteTest.pagarCuota();
+		assertTrue(participanteTest.cuotasPagas().equals(19));
+		
+		participanteTest.setCreadorCupon(creadorCuponMock);
+		when(creadorCuponMock.crearCupon(planMock, participanteTest)).thenReturn(cuponMock);
+		participanteTest.pagarCuota();
+		
+		verify(concesionariaMock).emitirCupon(cuponMock);
+		verify(planMock).dessuscribirParticipante(participanteTest);
 	}
-	
 	
 	@Test
 	public void testEdad() {

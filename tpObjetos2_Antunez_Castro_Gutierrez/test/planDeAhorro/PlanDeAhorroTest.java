@@ -6,18 +6,17 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mockito.Mockito;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 
 import concesionaria.Concesionaria;
 import excepciones.ExceptionParticipante;
-import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
 import financiamiento.Financiamiento;
 import financiamiento.Plan100;
 import financiamiento.Plan70y30;
+import inicializadores.ParticipanteCreator;
 import modeloRegistroYequipamiento.Modelo;
 import modoDeAdjudicacion.MayorCobertura;
 import modoDeAdjudicacion.ModoDeAdjudicacion;
@@ -42,10 +41,12 @@ public class PlanDeAhorroTest {
 	DateTime unaFechaDeInscripcion;
 	Fabrica fabricaMock;
 	Planta plantaMock;
+	ParticipanteCreator creadorMock;
 	
 	@Before
 	public void setUp() {
 		nroDeGrupo = 1;
+		creadorMock = mock(ParticipanteCreator.class);
 		modeloMock = mock(Modelo.class);
 		when(modeloMock.getValorDeVenta()).thenReturn(32400f);
 		financiamientoMock = mock(Plan100.class);
@@ -271,27 +272,20 @@ public class PlanDeAhorroTest {
 		assertTrue(planTest.montoDelFinanciamientoDeAdjudicacion().equals(9720f));
 	}
 	
-	
-	@Test(expected = SinStockExcepcion.class)
-	public void testMontoDelFleteSinPlanta() throws SinStockExcepcion {
-		when(concesionariaMock.getFabrica()).thenReturn(fabricaMock);
-		Mockito.doThrow(new SinStockExcepcion()).when(fabricaMock).plantaMasCercanaAConcesionaria(modeloMock);
-		planTest.montoDelFlete();
+	@Test
+	public void testGetCuotas() {
+		assertTrue(planTest.getCuotas().equals(cantCuotas));
 	}
-	
 	
 	@Test
-	public void testMontoDelFleteConPlanta() throws SinStockExcepcion {
-		when(concesionariaMock.getFabrica()).thenReturn(fabricaMock);
-		when(fabricaMock.plantaMasCercanaAConcesionaria(modeloMock)).thenReturn(plantaMock);
-		when(concesionariaMock.gastoDeFlete(plantaMock)).thenReturn(500f);
-		assertTrue(planTest.montoDelFlete().equals(500f));
+	public void testDesuscribirParticipante() {
 		
-		verify(concesionariaMock).getFabrica();
-		verify(fabricaMock).plantaMasCercanaAConcesionaria(modeloMock);
-		verify(concesionariaMock).gastoDeFlete(plantaMock);
+		planTest.setCreadorDeParticipante(creadorMock);
+		when(creadorMock.crearParticipante(clienteMock, planTest)).thenReturn(unParticipanteMock);
 		
+		planTest.suscribirCliente(clienteMock);
+		planTest.dessuscribirParticipante(unParticipanteMock);
+		
+		assertTrue(planTest.cantidadDeParticipantes().equals(0));
 	}
-	
-	
 }
