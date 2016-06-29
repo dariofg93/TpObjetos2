@@ -17,6 +17,8 @@ public class ComprobanteDePago {
 	private Float alicuota;
 	@SuppressWarnings("unused")
 	private Date fechaPago;
+	@SuppressWarnings("unused")
+	private Participante pagador;
 	
 	public ComprobanteDePago(Integer numeroDeCuota, PlanDeAhorro plan, Participante p){
 		this.cuotaPaga = numeroDeCuota;
@@ -24,5 +26,6 @@ public class ComprobanteDePago {
 		this.costoDelSeguro = plan.getConcesionaria().montoDelSeguro(p,plan.getModelo());
 		this.alicuota = plan.calcularAlicuota();
 		this.fechaPago = new Date();
+		this.pagador = p;
 	}
 }
