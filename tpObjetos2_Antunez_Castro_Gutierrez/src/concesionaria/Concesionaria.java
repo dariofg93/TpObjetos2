@@ -28,7 +28,7 @@ public class Concesionaria {
 	private List<Cliente> clientes;
 	private List<PlanDeAhorro> planes;
 	private Float gananciaAdministrativa;
-	private CompaniaAseguradora compañia;
+	private CompaniaAseguradora compaÃ±ia;
 	private List<CuponDeAdjudicacion> cupones;
 	private CuponCreator creadorCupon;
 	
@@ -39,7 +39,7 @@ public class Concesionaria {
 		this.clientes = new ArrayList<Cliente>();
 		this.planes = new ArrayList<PlanDeAhorro>();
 		this.gananciaAdministrativa = ganancia;
-		this.compañia = new CompaniaAseguradora();
+		this.compaÃ±ia = new CompaniaAseguradora();
 		this.cupones = new ArrayList<CuponDeAdjudicacion>();
 		this.creadorCupon = new CuponCreator();
 	}
@@ -85,7 +85,7 @@ public class Concesionaria {
 	/**
 	 * Prop: Elige un participante del plan dado para adjudicarlo y 
 	 * 		 genera un cupon de adjudicacion para el cliente adjudicado.
-	 * Prec: Si no cumple algunas reglas tirará regla alguna de estas excepciones:
+	 * Prec: Si no cumple algunas reglas tirarï¿½ regla alguna de estas excepciones:
 	 * @throws SinParticipantesExcepcion: Si no hay participantes disponibles en el plan dado.
 	 * @throws SinPlanesExcepcion: Si el plan dado no existe en la lista de planes.
 	 * @throws SinStockExcepcion: Si no hay stock del vehiculo que tiene el plan dado.
@@ -125,18 +125,18 @@ public class Concesionaria {
 	/**
 	 * Prop: Retorna el stock de un modelo en la concesionaria.
 	 * Prec: Debe haber un stock de almenos 1 en la concesionaria, sino se
-	 * 		 lanzará un SinStockExcepcion. 
+	 * 		 lanzarï¿½ un SinStockExcepcion. 
 	 */
 	public Integer stock(Modelo modelo) throws SinStockExcepcion{
 		return miFabrica.stock(modelo);
 	}
 
 	/**
-	 * Prop: Retorna el costo que impone la compañia aseguradora dados un
+	 * Prop: Retorna el costo que impone la compaï¿½ia aseguradora dados un
 	 * 		 participante y un modelo. 
 	 */
 	public Float montoDelSeguro(Participante p, Modelo modelo) {
-		return compañia.montoDelSeguro(p,modelo);
+		return compaÃ±ia.montoDelSeguro(p,modelo);
 	}
 	
 	/**
@@ -168,8 +168,8 @@ public class Concesionaria {
 	public void setCalculadora(CalculadorDeDistancia calc){
 		this.calculadora = calc;
 	}
-	public void setCompañia(CompaniaAseguradora comp){
-		this.compañia = comp;
+	public void setCompaÃ±ia(CompaniaAseguradora comp){
+		this.compaÃ±ia = comp;
 	}
 	public void setFabrica(Fabrica f){
 		this.miFabrica = f;

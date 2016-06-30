@@ -35,7 +35,7 @@ public class ConcesionariaTest {
 	
 	@Before
 	public void setUp(){
-		concesionariaTest = new Concesionaria("Roque Saenz Peña 352", 150.0f);
+		concesionariaTest = new Concesionaria("Roque Saenz PeÃ±a 352", 150.0f);
 		
 		modeloMock = mock(Modelo.class);
 		fabricaMock = mock(Fabrica.class);
@@ -123,10 +123,10 @@ public class ConcesionariaTest {
 	@Test
 	public void testMontoDelSeguro() {
 		Participante participanteMock = mock(Participante.class);
-		CompaniaAseguradora compañiaMock = mock(CompaniaAseguradora.class);
+		CompaniaAseguradora compaÃ±iaMock = mock(CompaniaAseguradora.class);
 		
-		concesionariaTest.setCompañia(compañiaMock);
-		when(compañiaMock.montoDelSeguro(participanteMock,modeloMock)).thenReturn(250f);
+		concesionariaTest.setCompaÃ±ia(compaÃ±iaMock);
+		when(compaÃ±iaMock.montoDelSeguro(participanteMock,modeloMock)).thenReturn(250f);
 		
 		assertTrue(concesionariaTest.montoDelSeguro(participanteMock,modeloMock).equals(250f));
 	}

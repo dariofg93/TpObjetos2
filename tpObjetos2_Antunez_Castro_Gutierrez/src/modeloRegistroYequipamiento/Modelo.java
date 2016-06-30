@@ -4,7 +4,7 @@ public class Modelo {
 
 	private String nombre;
 	@SuppressWarnings("unused")
-	private Integer añoDeLanzamiento;
+	private Integer aÃ±oDeLanzamiento;
 	@SuppressWarnings("unused")
 	private Integer cantidadDePuertas;
 	@SuppressWarnings("unused")
@@ -13,7 +13,7 @@ public class Modelo {
 	
 	public Modelo(String aName, Integer year, Integer doors, Equipamiento equipment, Float value){
 		this.nombre = aName;
-		this.añoDeLanzamiento = year;
+		this.aÃ±oDeLanzamiento = year;
 		this.cantidadDePuertas = doors;
 		this.equipamiento = equipment;
 		this.valorDelModelo = value;

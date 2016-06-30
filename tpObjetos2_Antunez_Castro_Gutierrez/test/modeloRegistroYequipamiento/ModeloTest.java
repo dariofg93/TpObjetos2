@@ -14,7 +14,7 @@ public class ModeloTest {
 	@Before
 	public void setUp(){
 		equipMock = mock(Full.class);
-		modeloTest = new Modelo("Chevrolet Corvette",1953,2,equipMock,80000f/**Dólares*/);
+		modeloTest = new Modelo("Chevrolet Corvette",1953,2,equipMock,80000f/**DÃ³lares*/);
 	}
 	
 	@Test

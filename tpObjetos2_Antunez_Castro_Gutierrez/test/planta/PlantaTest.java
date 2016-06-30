@@ -20,7 +20,7 @@ public class PlantaTest {
 	
 	@Before
 	public void setUp(){
-		plantaTest = new Planta("Roque Saenz Peña 352");
+		plantaTest = new Planta("Roque Saenz PeÃ±a 352");
 		modeloMock1 = mock(Modelo.class);
 			when(modeloMock1.getNombre()).thenReturn("Chevrolet Corvette");
 	}
