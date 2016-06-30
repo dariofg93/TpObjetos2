@@ -34,19 +34,16 @@ public class ParticipanteTest {
 		comprobanteMock = mock(ComprobanteDePago.class);
 	}
 	
-	
 	@Test
 	public void testcuotasPagas() {
 		assertTrue(participanteTest.cuotasPagas().equals(0));
 		
 	}
-
 	
 	@Test
 	public void testEstaDisponible() {
 		assertTrue(participanteTest.estaDisponible());
 	}
-	
 	
 	@Test
 	public void testFuiAdjudicado() {
@@ -55,12 +52,10 @@ public class ParticipanteTest {
 		assertTrue(participanteTest.estaDisponible().equals(false));
 	}
 	
-	
 	@Test
 	public void testGetCliente() {
 		assertTrue(participanteTest.getCliente().equals(clienteMock));
 	}
-	
 	
 	@Test
 	public void testGetFecNac() {
@@ -102,17 +97,7 @@ public class ParticipanteTest {
 	@Test
 	public void testEdad() {
 		assertTrue(participanteTest.edad().equals(21));
-		
-		// Para contemplar el otro caso, deberia llegar al punto de que hoy es el mes
-		// o es el dia del cumpleaños del Participante.
-		DateTime hoy = new DateTime();
-		Integer dia = hoy.getDayOfMonth();
-		Integer mes = hoy.getMonthOfYear();
-		DateTime unDiaComoHoy = new DateTime(participanteTest.getFecNac().getYear(),mes,dia,00,00);
-		when(clienteMock.getFecNac()).thenReturn(unDiaComoHoy);
-		assertTrue(participanteTest.edad().equals(22));
 	}
-	
 	
 	@Test
 	public void testTiempoDesdeInscripcion() {

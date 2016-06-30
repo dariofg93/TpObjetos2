@@ -3,6 +3,7 @@ package persona;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
+import org.joda.time.Days;
 
 import comprobantes.ComprobanteDePago;
 import excepciones.SinStockExcepcion;
@@ -79,41 +80,20 @@ public class Participante{
 	public Integer edad(){
 		DateTime fechaActual = new DateTime();
 		
-		// Cálculo de las diferencias.
-	    int anios = fechaActual.getYear() - this.getFecNac().getYear();
-	    int meses = fechaActual.getMonthOfYear() - this.getFecNac().getMonthOfYear();
-	    int dias = fechaActual.getDayOfMonth() - this.getFecNac().getDayOfMonth();
-	 
-	    // Hay que comprobar si el día de su cumpleaños es posterior
-	    // a la fecha actual, para restar 1 a la diferencia de años,
-	    // porque en ese caso, aun no es su cumpleaños.
-	 
-	 // Todavia no es el mes de su cumpleaños o es el mes pero no llego el día.
-	    if	(meses != 0 || (meses == 0 && dias != 0)) { 
-	       anios--;
-	    }
-	    
-	    return anios;
+		return Days.daysBetween(getFecNac().toLocalDate(),
+				fechaActual.toLocalDate()).getDays()/364;
 	}
 	
 	/** Devuelve la cantidad de años que pasaron desde que se inscribio.
 	 *  Observacion: su implementacion es similar al de edad() */
 	public Integer tiempoDesdeInscripcion(){
 		DateTime fechaActual = new DateTime();
-		
-	    int anios = fechaActual.getYear() - this.getFechaDeInscripcion().getYear();
-	    int meses = fechaActual.getMonthOfYear() - this.getFechaDeInscripcion().getMonthOfYear();
-	    int dias = fechaActual.getDayOfMonth() - this.getFechaDeInscripcion().getDayOfMonth();
-	 
-	    if(meses != 0 || (meses == 0 && dias != 0)) { 
-	        //anios--;
-	    }
 	    
-	    return anios;
+	    return Days.daysBetween(getFechaDeInscripcion().toLocalDate(),
+	    						fechaActual.toLocalDate()).getDays()/364;
 	}
 
 	public void setCreadorCupon(CuponCreator unCreador) {
 		creadorCupon = unCreador;
 	}
-	
 }
