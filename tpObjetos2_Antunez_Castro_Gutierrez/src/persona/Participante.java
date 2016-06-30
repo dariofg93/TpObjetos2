@@ -67,7 +67,8 @@ public class Participante{
 		Integer cuotaPaga = cuotasPagas()+1;
 		
 		if(cuotaPaga==plan.getCuotas()){
-			plan.getConcesionaria().emitirCupon(creadorCupon.crearCupon(plan, this));
+			if(estaDisponible())
+				plan.getConcesionaria().emitirCupon(creadorCupon.crearCupon(plan, this));
 			plan.dessuscribirParticipante(this);
 		}else{
 			comprobantes.add(creadorComprobante.crearComprobante(cuotaPaga,plan,this));

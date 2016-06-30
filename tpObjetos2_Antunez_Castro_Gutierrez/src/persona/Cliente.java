@@ -5,12 +5,16 @@ import org.joda.time.DateTime;
 
 public class Cliente{
 	
-	protected String nombreYApellido;
-	protected Integer dni;
-	protected String mail;
-	protected String direccion;
-	protected DateTime fechaNac;
-	protected DateTime fechaDeIngreso;
+	@SuppressWarnings("unused")
+	private String nombreYApellido;
+	@SuppressWarnings("unused")
+	private Integer dni;
+	@SuppressWarnings("unused")
+	private String mail;
+	@SuppressWarnings("unused")
+	private String direccion;
+	private DateTime fechaNac;
+	private DateTime fechaDeIngreso;
 	
 	public Cliente(Integer unDni, String nyAp, String mail, String dir, DateTime nacimiento, DateTime ingreso){
 		

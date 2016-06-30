@@ -73,7 +73,7 @@ public class ParticipanteTest {
 	}
 	
 	@Test
-	public void testPagarCuotaUltimaCuota() throws SinStockExcepcion {
+	public void testPagarCuota() throws SinStockExcepcion {
 		CuponCreator creadorCuponMock = mock(CuponCreator.class);
 		Concesionaria concesionariaMock = mock(Concesionaria.class);
 		Modelo modeloMock = mock(Modelo.class);
