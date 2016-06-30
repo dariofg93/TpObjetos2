@@ -93,6 +93,7 @@ public class Participante{
 	    						fechaActual.toLocalDate()).getDays()/364;
 	}
 
+	//Setter:
 	public void setCreadorCupon(CuponCreator unCreador) {
 		creadorCupon = unCreador;
 	}

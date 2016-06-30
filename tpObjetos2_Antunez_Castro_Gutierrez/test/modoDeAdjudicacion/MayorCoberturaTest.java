@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
@@ -26,7 +26,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorUnSoloPagador() throws ExceptionParticipante {
+	public void testElegirGanadorUnSoloPagador() throws SinParticipantesExcepcion {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -37,7 +37,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorMasDeUnPagadorUnoMasViejo() throws ExceptionParticipante {
+	public void testElegirGanadorMasDeUnPagadorUnoMasViejo() throws SinParticipantesExcepcion {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -52,7 +52,7 @@ public class MayorCoberturaTest {
 	}
 	
 	@Test
-	public void testElegirGanadorMasDeUnPagadorVariosMasViejos() throws ExceptionParticipante {
+	public void testElegirGanadorMasDeUnPagadorVariosMasViejos() throws SinParticipantesExcepcion {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(true);
 		
@@ -67,8 +67,8 @@ public class MayorCoberturaTest {
 		assertEquals(mayorCoberturaTest.elegirConcursante(planMock),participanteMock1);
 	}
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorNingunDisponible() throws ExceptionParticipante {
+	@Test(expected = SinParticipantesExcepcion.class)
+	public void testElegirGanadorNingunDisponible() throws SinParticipantesExcepcion {
 		
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		

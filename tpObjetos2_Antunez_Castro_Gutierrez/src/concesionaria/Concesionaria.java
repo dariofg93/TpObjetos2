@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import excepciones.SinPlanesExcepcion;
 import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
@@ -86,11 +86,11 @@ public class Concesionaria {
 	 * Prop: Elige un participante del plan dado para adjudicarlo y 
 	 * 		 genera un cupon de adjudicacion para el cliente adjudicado.
 	 * Prec: Si no cumple algunas reglas tirará regla alguna de estas excepciones:
-	 * @throws ExceptionParticipante: Si no hay participantes disponibles en el plan dado.
+	 * @throws SinParticipantesExcepcion: Si no hay participantes disponibles en el plan dado.
 	 * @throws SinPlanesExcepcion: Si el plan dado no existe en la lista de planes.
 	 * @throws SinStockExcepcion: Si no hay stock del vehiculo que tiene el plan dado.
 	 */
-	public void sortearMovil(PlanDeAhorro plan) throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
+	public void sortearMovil(PlanDeAhorro plan) throws SinParticipantesExcepcion, SinPlanesExcepcion, SinStockExcepcion{
 		Participante winner;
 		winner = buscarPlan(plan).elegirGanador();
 		emitirCupon(creadorCupon.crearCupon(buscarPlan(plan),winner));	

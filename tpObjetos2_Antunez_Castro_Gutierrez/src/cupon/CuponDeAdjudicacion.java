@@ -24,12 +24,19 @@ public class CuponDeAdjudicacion {
 		this.montoTotal = this.montoTotal(plan);
 	}
 
-	
-	private Float montoTotal(PlanDeAhorro plan) throws SinStockExcepcion{
+	/**
+	 * Prop: Calcula el monto total a pagar del cupon.
+	 * Prec: Debe haber almenos 1 de stock del modelo del plan en la concesionaria.
+	 */
+	private Float montoTotal(PlanDeAhorro plan){
 		return montoDelFleteDeConcesionaria(plan) + plan.montoDelFinanciamientoDeAdjudicacion();
 	}
 
-	private Float montoDelFleteDeConcesionaria(PlanDeAhorro plan) throws SinStockExcepcion {
+	/**
+	 * Prop: Calcula el monto que se debe pegar a la concesionaria por gastos de flete.
+	 * Prec: Debe haber almenos 1 de stock del modelo del plan en la concesionaria.
+	 */
+	private Float montoDelFleteDeConcesionaria(PlanDeAhorro plan){
 		Concesionaria concesionaria = plan.getConcesionaria();
 		Fabrica fabrica = concesionaria.getFabrica();
 		Modelo modelo = plan.getModelo();
@@ -38,6 +45,7 @@ public class CuponDeAdjudicacion {
 		return concesionaria.gastoDeFlete(planta);		
 	}
 	
+	//Getter:
 	public Modelo getModelo() {
 		return modelo;
 	}

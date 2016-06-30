@@ -2,7 +2,7 @@ package modoDeAdjudicacion;
 
 import java.util.Random;
 
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
@@ -19,12 +19,12 @@ public class Sorteo implements ModoDeAdjudicacion{
 	 * Prec: Debe haber almenos 1 participante disponible en el plan de ahorro dado.
 	 */
 	@Override
-	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante{
+	public Participante elegirConcursante(PlanDeAhorro plan) throws SinParticipantesExcepcion{
 		if(plan.hayParticipantesDisponibles()){
 			int ganador = (int)(rnd.nextDouble() * plan.participantesDisponibles().size()-1);
 			return plan.participantesDisponibles().get(ganador);
 		}else{
-			throw new ExceptionParticipante();
+			throw new SinParticipantesExcepcion();
 		}
 	}
 }

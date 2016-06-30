@@ -1,9 +1,9 @@
 package excepciones;
 
 @SuppressWarnings("serial")
-public class ExceptionParticipante extends Exception {
+public class SinParticipantesExcepcion extends Exception {
 
-	public ExceptionParticipante(){
+	public SinParticipantesExcepcion(){
 		super("Sin participantes disponibles.");
 	}
 

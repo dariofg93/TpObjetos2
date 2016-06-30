@@ -26,10 +26,10 @@ public class Cliente{
 		this.fechaDeIngreso = ingreso;
 	}
 
+	//Getters:
 	public DateTime getFecNac() {
 		return this.fechaNac;
 	}
-
 	public DateTime getFechaDeInscripcion() {
 		return this.fechaDeIngreso;
 	}

@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import aseguradora.CompaniaAseguradora;
 import calculadora.CalculadorDeDistancia;
 import cupon.CuponDeAdjudicacion;
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import excepciones.SinPlanesExcepcion;
 import excepciones.SinStockExcepcion;
 import fabrica.Fabrica;
@@ -148,7 +148,7 @@ public class ConcesionariaTest {
 	}
 	
 	@Test
-	public void testSortearMovil() throws ExceptionParticipante, SinPlanesExcepcion, SinStockExcepcion{
+	public void testSortearMovil() throws SinParticipantesExcepcion, SinPlanesExcepcion, SinStockExcepcion{
 		PlanDeAhorro planMock2 = mock(PlanDeAhorro.class);
 			when(planMock2.getNumeroDeGrupo()).thenReturn(5);
 		Participante participanteMock = mock(Participante.class);

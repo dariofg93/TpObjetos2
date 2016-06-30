@@ -2,7 +2,7 @@ package modoDeAdjudicacion;
 
 import java.util.List;
 
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
@@ -14,7 +14,7 @@ public class MayorCobertura implements ModoDeAdjudicacion{
 	 * Prec: Debe haber almenos 1 participante disponible en el plan de ahorro dado.
 	 */
 	@Override
-	public Participante elegirConcursante(PlanDeAhorro plan) throws ExceptionParticipante {
+	public Participante elegirConcursante(PlanDeAhorro plan) throws SinParticipantesExcepcion {
 		
 		Participante retorno;
 		
@@ -29,7 +29,7 @@ public class MayorCobertura implements ModoDeAdjudicacion{
 				retorno = findWinner(pagadores,plan);
 			}
 		}else{
-			throw new ExceptionParticipante();
+			throw new SinParticipantesExcepcion();
 		}
 		return retorno;
 	}

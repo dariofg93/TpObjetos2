@@ -10,7 +10,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import persona.Participante;
 import planDeAhorro.PlanDeAhorro;
 
@@ -28,7 +28,7 @@ public class SorteoTest {
 	}
 	
 	@Test
-	public void testElegirGanadorConDisponibles() throws ExceptionParticipante {
+	public void testElegirGanadorConDisponibles() throws SinParticipantesExcepcion {
 		Participante participanteMock = mock(Participante.class);
 		List<Participante> disponibles = Arrays.asList(participanteMock);
 		
@@ -39,8 +39,8 @@ public class SorteoTest {
 		assertEquals(sorteoTest.elegirConcursante(planMock),participanteMock);
 	}
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorSinDisponibles() throws ExceptionParticipante {
+	@Test(expected = SinParticipantesExcepcion.class)
+	public void testElegirGanadorSinDisponibles() throws SinParticipantesExcepcion {
 		when(planMock.hayParticipantesDisponibles()).thenReturn(false);
 		
 		sorteoTest.elegirConcursante(planMock);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import concesionaria.Concesionaria;
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import financiamiento.Financiamiento;
 import inicializadores.ParticipanteCreator;
 import modeloRegistroYequipamiento.Modelo;
@@ -36,6 +36,7 @@ public class PlanDeAhorro {
 		this.concesionaria = unaConcesionaria;
 		this.creadorDeParticipante = new ParticipanteCreator();
 	}
+	
 	/** Retorna el numero de grupo que identifica al Plan
 	 * perteneciente a una Concesionaria */
 	public Integer getNumeroDeGrupo() {
@@ -67,14 +68,12 @@ public class PlanDeAhorro {
 	public Integer cantidadDeParticipantes() {
 		return this.suscriptos.size();
 	}
-
 	
 	/** Dado un Cliente, lo inscribe al Plan,
 	 *  y pasaria a ser un Participante de este. */
 	public void suscribirCliente(Cliente c) {
 		suscriptos.add(creadorDeParticipante.crearParticipante(c,this));
 	}
-	
 
 	/** Retorna una lista con los Participantes que esten disponibles
 	 * para el sorteo. */
@@ -97,14 +96,12 @@ public class PlanDeAhorro {
 		return cantidadDeParticipantesDisponibles() > 0;
 	}
 	
-	
 	/** Retorna los Participantes que mas cuotas llevan pagando. */
 	public List<Participante> losQueMasPagaron(){
 		List<Participante>  ganadores = this.participantesDisponibles()
 										.stream()
 										.filter(participante -> participante.cuotasPagas() == mayorCantidadCuotasPagas())
 										.collect(Collectors.toList());
-		//System.out.println(ganadores);
 		return ganadores;		
 	}
 
@@ -119,7 +116,6 @@ public class PlanDeAhorro {
 		mayorPagas = participanteConMasCuotasPagas.cuotasPagas();
 		return mayorPagas;
 	}
-
 	
 	/** Retorna una lista con los participantes que tengan mayor edad. */
 	public List<Participante> losMasViejos(List<Participante> ganadores){
@@ -139,7 +135,6 @@ public class PlanDeAhorro {
 							 .get();
 		return mayor;
 	}
-
 	
 	/** Dada una lista de Participantes, retorna el primer Participante
 	 *  que se inscribio a este Plan. */
@@ -151,7 +146,6 @@ public class PlanDeAhorro {
 		return elGanador;
 	}
 
-	
 	/** Retorna el monto que cada Participante debe pagar en una cuota
 	 * de este Plan. */
 	public Float calcularAlicuota() {
@@ -164,11 +158,10 @@ public class PlanDeAhorro {
 		this.financiamiento = unFinanciamiento;
 	}
 	
-	
 	/** Se realiza un sorteo, y retorna el Participante que haya ganado.
 	 * Observacion: Si el Plan no tiene Participantes disponibles, va a
 	 * devolver un ExceptionParticipante. */
-	public Participante elegirGanador() throws ExceptionParticipante{
+	public Participante elegirGanador() throws SinParticipantesExcepcion{
 		
 		Participante elGanador;
 		
@@ -176,7 +169,7 @@ public class PlanDeAhorro {
 			elGanador = modoDeAdjudicacion.elegirConcursante(this);
 			elGanador.fuiAdjudicado();
 		}else{
-			throw new ExceptionParticipante();
+			throw new SinParticipantesExcepcion();
 		}
 		
 		return elGanador;

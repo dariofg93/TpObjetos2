@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import concesionaria.Concesionaria;
-import excepciones.ExceptionParticipante;
+import excepciones.SinParticipantesExcepcion;
 import fabrica.Fabrica;
 import financiamiento.Financiamiento;
 import financiamiento.Plan100;
@@ -228,14 +228,14 @@ public class PlanDeAhorroTest {
 	}
 	
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorSinParticipantes() throws ExceptionParticipante {
+	@Test(expected = SinParticipantesExcepcion.class)
+	public void testElegirGanadorSinParticipantes() throws SinParticipantesExcepcion {
 		planTest.elegirGanador();
 	}
 	
 	
 	@Test
-	public void testElegirGanadorConParticipantes() throws ExceptionParticipante {
+	public void testElegirGanadorConParticipantes() throws SinParticipantesExcepcion {
 		planTest.getParticipantes().add(unParticipanteMock);
 		when(adjudicacionMock.elegirConcursante(planTest)).thenReturn(unParticipanteMock);
 		assertTrue(planTest.elegirGanador().equals(unParticipanteMock));
@@ -243,8 +243,8 @@ public class PlanDeAhorroTest {
 	}
 	
 	
-	@Test(expected = ExceptionParticipante.class)
-	public void testElegirGanadorSinParticipantesDisponibles() throws ExceptionParticipante {
+	@Test(expected = SinParticipantesExcepcion.class)
+	public void testElegirGanadorSinParticipantesDisponibles() throws SinParticipantesExcepcion {
 		planTest.getParticipantes().add(unParticipanteMock);
 		when(unParticipanteMock.estaDisponible()).thenReturn(false);
 		planTest.elegirGanador();
